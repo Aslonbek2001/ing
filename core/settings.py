@@ -15,11 +15,13 @@ SECRET_KEY = 'django-insecure-^bso=voummt40i#1$_jro-4!501^len3%u2+8%1gp)fxz3wn-o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "institut.eu.pythonanywhere.com",
+    "127.0.0.1",                    
+    "localhost",
+]
 
-
-# CORS MEDIA SETTINGS
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,6 +36,7 @@ INSTALLED_APPS = [
 
     'users',
     'posts',
+    "corsheaders",
 
     'rest_framework_simplejwt',
     'rest_framework',
@@ -79,9 +82,11 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ]
 }
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
