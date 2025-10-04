@@ -17,6 +17,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "institut.eu.pythonanywhere.com",
+    "institute.pythonanywhere.com",
     "127.0.0.1",                    
     "localhost",
 ]
