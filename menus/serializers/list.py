@@ -1,6 +1,6 @@
-from menus.models import Menu, Page, PageImages, Employee, PageFiles
+from menus.models import Menu, PageImages, Employee, PageFiles
 from rest_framework import serializers
-from drf_spectacular.utils import extend_schema_field
+
 
 
 class MenuListSerializer(serializers.ModelSerializer):
@@ -9,7 +9,11 @@ class MenuListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ["id", "title", "status", "position", "page_slug", "children"]
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en',
+                    "status", "position", "page_slug", "children"
+                ]
 
     def get_page_slug(self, obj):
         if hasattr(obj, 'page') and obj.page:
@@ -25,7 +29,13 @@ class MenuListSerializer(serializers.ModelSerializer):
 class EmployeeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ["id", "full_name", "position", "phone", "email", "photo"]
+        fields = [
+                    "id", 
+                    "full_name_uz", "full_name_ru", "full_name_en",
+                    "position_uz", "position_ru", "position_en",
+                    "order",
+                    "phone", "email", "photo"
+                ]
 
 
 class PageImageSerializer(serializers.ModelSerializer):
@@ -37,4 +47,8 @@ class PageImageSerializer(serializers.ModelSerializer):
 class PageFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = PageFiles
-        fields = ["id", "title", "file", "position", "status"]
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en', 
+                    "file", "position", "status"
+                ]

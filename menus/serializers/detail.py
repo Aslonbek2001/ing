@@ -16,7 +16,12 @@ class PageDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ["id", "title", "slug", "status", "description", "images", "employees", "files"]
+        fields = [
+                    "id",  
+                    'title_uz', 'title_ru', 'title_en',
+                    'description_uz', 'description_ru', 'description_en',
+                    "slug", "status", "images", "employees", "files"
+                ]
 
     @extend_schema_field(PageImageSerializer(many=True))
     def get_images(self, obj):
@@ -43,8 +48,8 @@ class MenuDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ["id", "title", "status", "position"]
-    
-    
-    def get_children(self, obj):
-        return MenuDetailSerializer(obj.children.all(), many=True).data
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en',
+                    "status", "position"
+                ]

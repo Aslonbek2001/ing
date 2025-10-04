@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Page, Menu, Employee
+from .models import Page, Menu, Employee, PageFiles
 
 @register(Menu)
 class MenuTranslationOptions(TranslationOptions):
@@ -13,3 +13,7 @@ class PostTranslationOptions(TranslationOptions):
 @register(Employee)
 class PostTranslationOptions(TranslationOptions):
     fields = ("full_name", "position", "description")
+
+@register(PageFiles)
+class PostTranslationOptions(TranslationOptions):
+    fields = ("title",)

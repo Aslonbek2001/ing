@@ -80,6 +80,7 @@ class Employee(models.Model):
         db_index=True,
         blank=True
     )
+    order = models.PositiveIntegerField(default=0)
     photo = models.ImageField(upload_to='employees/', blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -111,4 +112,4 @@ class PageFiles(models.Model):
         verbose_name_plural = "Page Fayllari"
 
     def __str__(self):
-        return f"Page: {self.page.title} - Fayl ID: {self.id}"
+        return f"Page: {self.title} - Fayl ID: {self.id}"
