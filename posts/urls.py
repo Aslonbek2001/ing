@@ -1,8 +1,13 @@
-from rest_framework.routers import DefaultRouter
-from .views import PostViewSet
+from rest_framework_nested.routers import DefaultRouter, NestedDefaultRouter
+from .views import PostViewSet, PostImageViewSet
 
 router = DefaultRouter()
 router.register(r"posts", PostViewSet, basename="post")
 
-urlpatterns = router.urls
+# Nested router: posts/{post_id}/images
+posts_router = NestedDefaultRouter(router, r"posts", lookup="post")
+posts_router.register(r"images", PostImageViewSet, basename="post-images")
+
+
+urlpatterns = router.urls + posts_router.urls
 

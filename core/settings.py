@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^bso=voummt40i#1$_jro-4!501^len3%u2+8%1gp)fxz3wn-o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "institut.eu.pythonanywhere.com",
@@ -36,7 +36,10 @@ INSTALLED_APPS = [
 
     'users',
     'posts',
+    'menus',
+    'parts',
     "corsheaders",
+
 
     'rest_framework_simplejwt',
     'rest_framework',
@@ -55,8 +58,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'University Project API',
     'DESCRIPTION': 'University project description',
     'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
+    'SERVE_INCLUDE_SCHEMA': False
 }
 
 

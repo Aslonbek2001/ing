@@ -22,7 +22,7 @@ class Post(models.Model):
         help_text="Rasm (ixtiyoriy)"
     )
     description = models.TextField(
-        help_text="Batafsil ma'lumot"
+        help_text="Batafsil ma'lumot", null=True, blank=True
     )
     status = models.BooleanField(
         default=True,
@@ -52,5 +52,28 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+
+class PostImages(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="images",
+        help_text="Postga tegishli rasm"
+    )
+    image = models.ImageField(
+        upload_to="post_images/",
+        help_text="Rasm"
+    )
+
+    class Meta:
+        db_table = "post_images"
+        verbose_name = "Post Rasmi"
+        verbose_name_plural = "Post Rasmlari"
+
+    def __str__(self):
+        return f"Post: {self.post.title} - Rasm ID: {self.id}"
+
+
 
 auto_delete_image_with_renditions(Post, "image")
