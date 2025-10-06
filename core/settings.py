@@ -35,13 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'users',
-    'posts',
-    'menus',
-    'parts',
+
+    'users.apps.UsersConfig',
+    'posts.apps.PostsConfig',
+    'menus.apps.MenusConfig',
+    'parts.apps.PartsConfig',
+
+
     "corsheaders",
-
-
     'rest_framework_simplejwt',
     'rest_framework',
     'drf_spectacular',
@@ -53,6 +54,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SPECTACULAR_SETTINGS = {

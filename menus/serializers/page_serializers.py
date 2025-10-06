@@ -1,0 +1,52 @@
+from rest_framework import serializers
+from menus.models import Page
+from drf_spectacular.utils import extend_schema_field
+from menus.models import Page
+from menus.serializers.employee_serializers import EmployeeListSerializer
+from menus.serializers.img_files_serializers import PageFileSerializer, PageImageSerializer
+
+# # # # # Default # # # # # 
+
+class PageListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en',
+                    "status", "type", "slug", "menu"
+                ]
+
+
+class PageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Page
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en',
+                    'description_uz', 'description_ru', 'description_en',
+                    "status", "type", "slug", "menu"
+                ]
+        read_only_fields = ['id']
+
+
+
+# # # # # # Users # # # # 
+class PageDetailSerializerForUsers(serializers.ModelSerializer):
+    images = PageImageSerializer(many=True, read_only=True)
+    employees = EmployeeListSerializer(many=True, read_only=True)
+    files = PageFileSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Page
+        fields = [
+                    "id",  
+                    'title_uz', 'title_ru', 'title_en',
+                    'description_uz', 'description_ru', 'description_en',
+                    "slug", "status", "images", "employees", "files"
+                ]
+
+
+
+
+

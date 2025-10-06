@@ -1,6 +1,7 @@
 from django.db import models
 from versatileimagefield.fields import VersatileImageField
 from core.mixins import auto_delete_image_with_renditions
+from django.utils import timezone
 
 type_choices = (
     ("news", "Yangilik"),
@@ -29,11 +30,13 @@ class Post(models.Model):
         help_text="Aktiv yoki yo'q"
     )
     published_date = models.DateTimeField(
-        auto_now_add=True,
+        default=timezone.now,
+        db_index=True,
         help_text="E'lon qilingan sana"
     )
     type = models.CharField(
         max_length=20,
+        db_index=True,
         choices=type_choices,
         default="news",
         help_text="Turini tanlang"
@@ -43,9 +46,7 @@ class Post(models.Model):
         db_table = "posts"
         ordering = ["-published_date"]
         indexes = [
-            models.Index(fields=["status"]),
-            models.Index(fields=["type"]),
-            models.Index(fields=["published_date"]),
+            models.Index(fields=["status", "type", "-published_date"]),
         ]
         verbose_name = "Post (Yangilik/E'lon)"
         verbose_name_plural = "Postlar (Yangiliklar va E'lonlar)"
@@ -77,3 +78,4 @@ class PostImages(models.Model):
 
 
 auto_delete_image_with_renditions(Post, "image")
+auto_delete_image_with_renditions(PostImages, "image")

@@ -25,13 +25,6 @@ class PostListSerializer(serializers.ModelSerializer):
         return None
 
 
-class PostImageSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = PostImages
-        fields = ['id', 'post', 'image']
-        read_only_fields = ['id']
-
 class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -46,3 +39,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "title_uz": {"required": True},
             "description_uz": {"required": True},
         }
+
+class PostImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PostImages
+        fields = ['id', 'image']
+        read_only_fields = ['id']

@@ -1,18 +1,20 @@
 from django.db import models
 from django.utils.text import slugify
+from core.mixins import auto_delete_image_with_renditions
 
 
 class Menu(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, db_index=True,)
     parent = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
         related_name='children',
+        db_index=True,
         blank=True,
         null=True
     )
     status = models.BooleanField(default=True)
-    position = models.PositiveIntegerField(default=0)
+    position = models.PositiveIntegerField(default=0, db_index=True)
 
     class Meta:
         ordering = ['position']
@@ -28,16 +30,17 @@ class Page(models.Model):
         ('lab', 'Laboratoriya'),
         ('page', 'Sahifa'),
     )
-    title = models.CharField(max_length=200)
-    type = models.CharField(max_length=20, choices=PAGE_TYPES, default='page')
+    title = models.CharField(max_length=200, db_index=True,)
+    type = models.CharField(max_length=20, db_index=True, choices=PAGE_TYPES, default='page')
     menu = models.OneToOneField(
         Menu,
         on_delete=models.CASCADE,
         related_name='page',
+        db_index=True,
         null=True, blank=True
     )
-    slug = models.SlugField(unique=True, max_length=100, null=True, blank=True)
-    status = models.BooleanField(default=True)
+    slug = models.SlugField(unique=True, db_index=True, max_length=100, null=True, blank=True)
+    status = models.BooleanField(default=True, db_index=True,)
     description = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -54,6 +57,7 @@ class PageImages(models.Model):
         Page,
         on_delete=models.CASCADE,
         related_name="images",
+        db_index=True,
         help_text="Paga tegishli rasm"
     )
     image = models.ImageField(
@@ -80,8 +84,8 @@ class Employee(models.Model):
         db_index=True,
         blank=True
     )
-    order = models.PositiveIntegerField(default=0)
-    photo = models.ImageField(upload_to='employees/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, db_index=True,)
+    image = models.ImageField(upload_to='employees/', blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     status = models.BooleanField(default=True)
@@ -98,12 +102,12 @@ class PageFiles(models.Model):
         related_name="files",
         help_text="Fayl tegishli xodim"
     )
-    title = models.CharField(max_length=200, blank=True, null=True)
+    title = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     file = models.FileField(
         upload_to="employee_files/",
         help_text="Fayl"
     )
-    position = models.PositiveIntegerField(default=0)
+    position = models.PositiveIntegerField(default=0, db_index=True,)
     status = models.BooleanField(default=True)
 
     class Meta:
@@ -113,3 +117,8 @@ class PageFiles(models.Model):
 
     def __str__(self):
         return f"Page: {self.title} - Fayl ID: {self.id}"
+    
+
+auto_delete_image_with_renditions(PageImages, "image")
+auto_delete_image_with_renditions(PageFiles, "file")
+auto_delete_image_with_renditions(Employee, "image")

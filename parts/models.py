@@ -1,4 +1,5 @@
 from django.db import models
+from core.mixins import auto_delete_image_with_renditions
 
 
 class Carousel(models.Model):
@@ -6,7 +7,7 @@ class Carousel(models.Model):
     image = models.ImageField(upload_to='carousel/')
     description = models.TextField(blank=True, null=True, db_index=True)
     link = models.URLField(blank=True, null=True)
-    position = models.PositiveIntegerField(default=0)
+    position = models.PositiveIntegerField(default=0, db_index=True)
     status = models.BooleanField(default=True)
 
     class Meta:
@@ -14,3 +15,6 @@ class Carousel(models.Model):
 
     def __str__(self):
         return self.title
+
+
+auto_delete_image_with_renditions(Carousel, "image")
