@@ -2,12 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
-from django.shortcuts import get_object_or_404
-from django.db.models import Prefetch
 from menus.services.page_services import PageService
-from menus.models import Page, PageImages, PageFiles, Employee
+from menus.models import Page
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema
+from core.pagination import CustomPageNumberPagination
 from menus.serializers.page_serializers import (
     PageDetailSerializerForUsers, PageListSerializer, PageSerializer
 )
@@ -39,6 +38,7 @@ class PageListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "menu", "title"]
     serializer_class = PageSerializer
+    pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == "GET":

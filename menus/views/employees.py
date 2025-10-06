@@ -6,8 +6,10 @@ from menus.models import Employee
 from menus.serializers.employee_serializers import EmployeeDetailSerializer, EmployeeListSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema
+from core.pagination import CustomPageNumberPagination
 
-@extend_schema(tags=["Admin - Employee"])
+
+@extend_schema(tags=["Employees"])
 class EmployeeListCreateAPIView(APIView):
     """
     GET  →  Barcha xodimlarni olish
@@ -15,11 +17,14 @@ class EmployeeListCreateAPIView(APIView):
     """
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = EmployeeDetailSerializer
+    pagination_class = CustomPageNumberPagination
 
     def get(self, request):
-        pages = Employee.objects.all()
-        serializer = EmployeeListSerializer(pages, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        employees = Employee.objects.all()
+        paginator = self.pagination_class()
+        result_page = paginator.paginate_queryset(employees, request)
+        serializer = EmployeeListSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -29,7 +34,7 @@ class EmployeeListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(tags=["Admin - Employee"])
+@extend_schema(tags=["Employees"])
 class EmployeeDetailAPIView(APIView):
     """
     GET    →  Xodim ma'lumotlarini olish
