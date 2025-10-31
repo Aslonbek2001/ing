@@ -8,9 +8,17 @@ class EmployeeListSerializer(serializers.ModelSerializer):
                     "id", 
                     "full_name_uz", "full_name_ru", "full_name_en",
                     "position_uz", "position_ru", "position_en",
-                    "order",
+                    "order", "pages",
                     "phone", "email", "image"
                 ]
+    
+    def create(self, validated_data):
+        pages = validated_data.pop("pages", [])
+        employee = Employee.objects.create(**validated_data)
+        employee.pages.set(pages)
+        return employee
+
+
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,8 +28,17 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
                     "full_name_uz", "full_name_ru", "full_name_en",
                     "position_uz", "position_ru", "position_en",
                     "description_uz", "description_ru", "description_en",
-                    "order",
+                    "order", "pages",
                     "phone", "email", "image"
                 ]
+    
+    def update(self, instance, validated_data):
+        pages = validated_data.pop("pages", None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if pages is not None:
+            instance.pages.set(pages)
+        return instance
         
 
