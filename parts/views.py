@@ -5,12 +5,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
-
+from core.pagination import CustomPageNumberPagination
 
 @extend_schema(tags=["Carousels"])
 class CarouselViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     serializer_class = CarouselSerializer
+    pagination_class = CustomPageNumberPagination
     permission_classes = [IsAuthenticatedOrReadOnly]
     search_fields = [
         "title_uz", "title_ru", "title_en",

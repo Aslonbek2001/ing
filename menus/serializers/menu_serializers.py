@@ -34,6 +34,6 @@ class MenuDetailSerializer(serializers.ModelSerializer):
         fields = [
                     "id", 
                     'title_uz', 'title_ru', 'title_en',
-                    "status", "position", "parent"
+                    "status", "position", "parent", ""
                 ]
 

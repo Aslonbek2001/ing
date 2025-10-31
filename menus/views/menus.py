@@ -5,6 +5,7 @@ from menus.models import Menu
 from menus.serializers.menu_serializers import MenuListSerializer, MenuDetailSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from core.pagination import CustomPageNumberPagination
 from drf_spectacular.utils import extend_schema
 
 @extend_schema(
@@ -22,6 +23,7 @@ class MenuListCreateAPIView(generics.ListCreateAPIView):
     """
     # queryset = Menu.objects.filter(parent__isnull=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "parent"]  # Filtrlash imkoniyati
     serializer_class = MenuDetailSerializer

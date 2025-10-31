@@ -4,14 +4,14 @@ from .models import Menu, Page, PageImages, Employee, PageFiles
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ["title", "status", "position"]
+    list_display = ["id", "title", "status", "position"]
     list_filter = ["status"]
     search_fields = ["title"]
     ordering = ["position"]
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
-    list_display = ["title", "type", "status"]
+    list_display = ["id", "title", "type", "status"]
     list_filter = ["status", "type"]
     search_fields = ["title", "description"]
     ordering = ["title"]
@@ -19,20 +19,20 @@ class PageAdmin(admin.ModelAdmin):
 
 @admin.register(PageImages)
 class PageImagesAdmin(admin.ModelAdmin):
-    list_display = ["page", "image"]
+    list_display = ["id", "page", "image"]
     search_fields = ["page__title"]
     ordering = ["page"]
     list_filter = ["page"]
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ["full_name", "position", "phone", "email"]
+    list_display = ["id", "full_name", "position", "phone", "email"]
     search_fields = ["full_name", "position", "email", "phone"]
     ordering = ["full_name"]
 
 @admin.register(PageFiles)
 class PageFilesAdmin(admin.ModelAdmin):
-    list_display = ["file", "page", "position", "status"]
+    list_display = ["id", "file", "page", "position", "status"]
     list_filter = ["status", "page"]
     search_fields = ["file", "title"]
     ordering = ["position"]
