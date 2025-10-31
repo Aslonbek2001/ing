@@ -1,8 +1,9 @@
-from menus.models import Menu
+from menus.models import Menu, Page
 from rest_framework import serializers
+from menus.services.menu_services import MenuService
 
-# # # # # # Users Admin # # # # # # #
-class MenuListSerializer(serializers.ModelSerializer):
+
+class MenuReadSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     page_slug = serializers.SerializerMethodField()
 
@@ -10,9 +11,11 @@ class MenuListSerializer(serializers.ModelSerializer):
         model = Menu
         fields = [
                     "id", 
-                    'title_uz', 'title_ru', 'title_en',
-                    "status", "position", "page_slug", "children"
+                    'title_uz', 'title_ru', 'title_en', "parent",
+                    "status", "position", "has_page", "page_slug", "children"
                 ]
+    
+    
 
     def get_page_slug(self, obj):
         if hasattr(obj, 'page') and obj.page:
@@ -21,19 +24,40 @@ class MenuListSerializer(serializers.ModelSerializer):
     
     
     def get_children(self, obj):
-        return MenuListSerializer(obj.children.all(), many=True).data
+        return MenuReadSerializer(obj.children.all(), many=True).data
 
 
 
-# # # # # # Admin # # # # # # # 
+class MenuWriteSerializer(serializers.ModelSerializer):
 
-class MenuDetailSerializer(serializers.ModelSerializer):
+    page_slug = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     class Meta:
         model = Menu
         fields = [
                     "id", 
                     'title_uz', 'title_ru', 'title_en',
-                    "status", "position", "parent", ""
+                    "status", "position", "parent", "has_page", "page_slug"
                 ]
+    
+    def validate(self, data):
+        has_page = data.get('has_page', None)
+
+        if has_page:
+            page_slug = data.get('page_slug', None)
+            if not page_slug:
+                raise serializers.ValidationError("Agar 'has_page' True bo'lsa, 'page_slug' kiritilishi shart.")
+          
+        return data
+    
+    def create(self, validated_data):
+        return MenuService.create_menu(validated_data)
+    
+    def update(self, instance, validated_data):
+        return MenuService.update_menu(instance, validated_data)
+    
+
+        
+    
+    
 

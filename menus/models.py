@@ -14,6 +14,7 @@ class Menu(models.Model):
         null=True
     )
     status = models.BooleanField(default=True)
+    has_page = models.BooleanField(default=False, db_index=True)
     position = models.PositiveIntegerField(default=0, db_index=True)
 
     class Meta:

@@ -1,32 +1,26 @@
-from rest_framework.views import APIView
 from django.db.models import Prefetch
-from rest_framework import generics
 from menus.models import Menu
 from menus.serializers.menu_serializers import MenuReadSerializer, MenuWriteSerializer
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from core.pagination import CustomPageNumberPagination
-from drf_spectacular.utils import extend_schema
 
-@extend_schema(
-    tags=["Navbar and Menu"],
-    summary="List and Create Menus",
-    description=(
-        "GET → Navbar’ni ichma-ich (nested) holda qaytaradi.\n"
-        "POST → Yangi menyu qo‘shish imkonini beradi. \n"
-    ),
-)
-class MenuListCreateAPIView(generics.ListCreateAPIView):
+
+class BaseMenuView:
+    """
+    Menu uchun umumiy konfiguratsiya:
+    - serializerlarni avtomatik tanlaydi
+    - permission’larni o‘rnatadi
+    - querysetni optimallashtiradi
+    """
 
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
-        """GET uchun ListSerializer, POST uchun DetailSerializer"""
         if self.request.method == "GET":
             return MenuReadSerializer
         return MenuWriteSerializer
-    
+
     def get_queryset(self):
         """
         Auth → barcha menyular
@@ -36,7 +30,7 @@ class MenuListCreateAPIView(generics.ListCreateAPIView):
             "id", "title_uz", "title_ru", "title_en", "status", "position", "parent"
         ).filter(parent__isnull=True)
 
-        # 🔥 Prefetch bolalar menyularini oldindan olish
+        # Prefetch bolalar menyularini oldindan olish
         base_qs = base_qs.prefetch_related(
             Prefetch(
                 "children",
@@ -46,29 +40,7 @@ class MenuListCreateAPIView(generics.ListCreateAPIView):
             )
         )
 
-        user = self.request.user
-        if not user.is_authenticated:
+        if not self.request.user.is_authenticated:
             base_qs = base_qs.filter(status=True)
 
         return base_qs.order_by("position")
-    
-
-
-
-
-@extend_schema(
-    tags=["Navbar and Menu"],
-    summary="Retrieve, Update, or Delete Menu",
-    description=(
-        "GET → Bitta menyuni olish\n"
-        "PUT/PATCH → Menyuni yangilash\n"
-        "DELETE → Menyuni o‘chirish"
-    ),
-)
-class MenuDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Menu.objects.all()
-    serializer_class = MenuReadSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    lookup_field = "id"  
-    lookup_url_kwarg = "menu_id"
-
