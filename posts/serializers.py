@@ -5,7 +5,7 @@ from drf_spectacular.utils import extend_schema_field
 
 class PostListSerializer(serializers.ModelSerializer):
 
-    image = serializers.SerializerMethodField()
+    # image = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields = [
@@ -14,15 +14,15 @@ class PostListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id"]
     
-    @extend_schema_field(serializers.CharField(allow_null=True))
-    def get_image(self, obj):
-        request = self.context.get("request")
-        if obj.image:
-            try:
-                return request.build_absolute_uri(obj.image.thumbnail['400x400'].url)  # medium variant
-            except Exception:
-                return obj.image.url
-        return None
+    # @extend_schema_field(serializers.CharField(allow_null=True))
+    # def get_image(self, obj):
+    #     request = self.context.get("request")
+    #     if obj.image:
+    #         try:
+    #             return request.build_absolute_uri(obj.image.thumbnail['400x400'].url)  # medium variant
+    #         except Exception:
+    #             return obj.image.url
+    #     return None
 
 
 class PostDetailSerializer(serializers.ModelSerializer):

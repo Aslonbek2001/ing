@@ -16,7 +16,7 @@ class Post(models.Model):
         db_index=True,
         help_text="Sarlavha"
     )
-    image = VersatileImageField(
+    image = models.ImageField(
         upload_to="posts/",
         null=True,
         blank=True,
