@@ -14,7 +14,7 @@ class BaseMenuView:
     """
 
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = CustomPageNumberPagination
+    # pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == "GET":
