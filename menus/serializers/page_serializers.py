@@ -4,10 +4,12 @@ from drf_spectacular.utils import extend_schema_field
 from menus.models import Page
 from menus.serializers.employee_serializers import EmployeeListSerializer
 from menus.serializers.img_files_serializers import PageFileSerializer, PageImageSerializer
+from menus.serializers.menu_serializers import MenuReadSerializer
 
 # # # # # Default # # # # # 
 
 class PageListSerializer(serializers.ModelSerializer):
+    menu = MenuReadSerializer(read_only=True)
     class Meta:
         model = Page
         fields = [
