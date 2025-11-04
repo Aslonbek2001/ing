@@ -20,6 +20,7 @@ class PageListSerializer(serializers.ModelSerializer):
 
 
 class PageSerializer(serializers.ModelSerializer):
+    menu = MenuReadSerializer(read_only=True)
 
     class Meta:
         model = Page
@@ -35,6 +36,7 @@ class PageSerializer(serializers.ModelSerializer):
 
 # # # # # # Users # # # # 
 class PageDetailSerializerForUsers(serializers.ModelSerializer):
+    menu = MenuReadSerializer(read_only=True)
     images = PageImageSerializer(many=True, read_only=True)
     employees = EmployeeListSerializer(many=True, read_only=True)
     files = PageFileSerializer(many=True, read_only=True)
@@ -42,7 +44,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
-                    "id",  
+                    "id", "menu",
                     'title_uz', 'title_ru', 'title_en',
                     'description_uz', 'description_ru', 'description_en',
                     "slug", "status", "images", "employees", "files"
