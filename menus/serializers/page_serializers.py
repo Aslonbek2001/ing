@@ -53,4 +53,12 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
 
 
 
+class PageListSerializerForUsers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Page
+        fields = [ "id", 'title_uz', 'title_ru', 'title_en']
+        read_only_fields = ["id", "title_uz", "title_ru", "title_en"]
+
+
 

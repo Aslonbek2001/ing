@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from .models import Post, PostImages
-from .serializers import PostListSerializer, PostDetailSerializer, PostImageSerializer
+from .serializers import PostListSerializer, PostDetailSerializer, PostImageSerializer, PostCreateSerializer
 from core.pagination import CustomPageNumberPagination
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
@@ -27,13 +27,16 @@ class PostViewSet(viewsets.ModelViewSet):
         )
         if self.action == "list":
             return qs.only(
-                "id", "title_uz", "title_ru", "title_en", "image", "status", "published_date", "type"
+                "id", "title_uz", "title_ru", "title_en", "status", "published_date", "type"
             ).order_by("-published_date")
         return qs.order_by("-published_date")
 
     def get_serializer_class(self):
-        if self.action == "list" or self.action == "create":
+        if self.action == "list":
             return PostListSerializer
+        elif self.action == "create":
+            return PostCreateSerializer
+        
         return PostDetailSerializer
 
 

@@ -1,14 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend, filters
 from rest_framework import generics, status
 from menus.services.page_services import PageService
 from menus.models import Page
+from rest_framework import filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema
 from core.pagination import CustomPageNumberPagination
 from menus.serializers.page_serializers import (
-    PageDetailSerializerForUsers, PageListSerializer, PageSerializer
+    PageDetailSerializerForUsers, PageListSerializer, 
+    PageSerializer, PageListSerializerForUsers
 )
 
 
@@ -62,42 +64,20 @@ class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return Page.objects.all()
 
 
-# @extend_schema(tags=["Admin - Page"], operation_id="page-list-create")
-# class PageListCreateAPIView(APIView):
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     serializer_class = PageSerializer
 
-#     def get(self, request):
-#         pages = Page.objects.all()
-#         serializer = PageListSerializer(pages, many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+@extend_schema(tags=["All Pages for Selection"])
+class AllPagesForSelection(generics.ListAPIView):
+    queryset = Page.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["title_uz", "title_ru", "title_en"]  
+    search_fields = ["id", "^title_uz", "^title_ru", "^title_en"]
+    serializer_class = PageListSerializerForUsers
 
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# @extend_schema(tags=["Admin - Page"], operation_id="page-detail-for-admin")
-# class PageDetailAPIView(APIView):
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     serializer_class = PageSerializer
-#     def get(self, request, slug):
-#         page = get_object_or_404(Page, slug=slug, status=True)
-#         serializer = self.serializer_class(page)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
-#     def put(self, request, slug):
-#         page = get_object_or_404(Page, slug=slug, status=True)
-#         serializer = self.serializer_class(page, data=request.data, partial=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-#     def delete(self, request, slug):
-#         page = get_object_or_404(Page, slug=slug, status=True)
-#         page.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+    def get_queryset(self):
+        # Use .only() to fetch only required fields, reducing data transfer
+        qs = Page.objects.only("id", "title_uz", "title_ru", "title_en")
+        # Add index check for optimization (ensure indexes exist in model)
+        if getattr(self, "swagger_fake_view", False):
+            return Page.objects.none()  # For schema generation
+        return qs

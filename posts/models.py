@@ -16,12 +16,6 @@ class Post(models.Model):
         db_index=True,
         help_text="Sarlavha"
     )
-    image = models.ImageField(
-        upload_to="posts/",
-        null=True,
-        blank=True,
-        help_text="Rasm (ixtiyoriy)"
-    )
     description = models.TextField(
         help_text="Batafsil ma'lumot", null=True, blank=True
     )
@@ -76,6 +70,4 @@ class PostImages(models.Model):
         return f"Post: {self.post.title} - Rasm ID: {self.id}"
 
 
-
-auto_delete_image_with_renditions(Post, "image")
 auto_delete_image_with_renditions(PostImages, "image")

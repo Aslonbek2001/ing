@@ -3,7 +3,7 @@ from django.urls import path
 
 from menus.views.menu_views import MenuListCreateAPIView, MenuDetailAPIView
 
-from menus.views.pages import PageListCreateAPIView, PageDetailAPIView, PageDetailForUsers
+from menus.views.pages import PageListCreateAPIView, PageDetailAPIView, PageDetailForUsers, AllPagesForSelection
 from menus.views.employees import EmployeeListCreateAPIView, EmployeeDetailAPIView
 from menus.views.img_file_views import PageFileDetailAPIView, PageFileListCreateAPIView, PageImageDetailAPIView, PageImageListCreateAPIView
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path("pages-users/<slug:slug>/", PageDetailForUsers.as_view(), name="page-for-users"),
     path("pages/<slug:slug>/", PageDetailAPIView.as_view(), name="page-detail"),
     path("pages/", PageListCreateAPIView.as_view(), name="page-list-create"),
+    path("all-pages/", AllPagesForSelection.as_view(), name="all-pages-for-selection"),
 
     # 🗂 Page Files
     path("page-files/", PageFileListCreateAPIView.as_view(), name="page-file-list-create"),
@@ -26,11 +27,6 @@ urlpatterns = [
     # 🖼 Page Images
     path("page-images/", PageImageListCreateAPIView.as_view(), name="page-image-list-create"),
     path("page-images/<int:id>/", PageImageDetailAPIView.as_view(), name="page-image-detail"),
-
-
-
-    
-
 
     # Employees
     path("employees/", EmployeeListCreateAPIView.as_view(), name="employee-list-create"),
