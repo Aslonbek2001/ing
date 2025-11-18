@@ -16,7 +16,7 @@ urlpatterns = [
 
     # Pages
     path("pages-users/<slug:slug>/", PageDetailForUsers.as_view(), name="page-for-users"),
-    path("pages/<slug:slug>/", PageDetailAPIView.as_view(), name="page-detail"),
+    path("pages/<int:id>/", PageDetailAPIView.as_view(), name="page-detail"),
     path("pages/", PageListCreateAPIView.as_view(), name="page-list-create"),
     path("all-pages/", AllPagesForSelection.as_view(), name="all-pages-for-selection"),
 

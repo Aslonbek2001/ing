@@ -56,7 +56,7 @@ class PageListCreateAPIView(generics.ListCreateAPIView):
 class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    lookup_field = "slug"
+    lookup_field = "id"
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
