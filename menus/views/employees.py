@@ -1,67 +1,55 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-from menus.models import Employee
-from menus.serializers.employee_serializers import EmployeeDetailSerializer, EmployeeListSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from drf_spectacular.utils import extend_schema
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from menus.models import Employee
+from menus.serializers.employee_serializers import (
+    EmployeeListSerializer, EmployeeDetailSerializer
+)
 from core.pagination import CustomPageNumberPagination
-
+from drf_spectacular.utils import extend_schema
 
 @extend_schema(tags=["Employees"])
-class EmployeeListCreateAPIView(APIView):
-    """
-    GET  →  Barcha xodimlarni olish
-    POST →  Yangi xodim yaratish
-    """
+class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = EmployeeDetailSerializer
     pagination_class = CustomPageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
-    def get(self, request):
-        employees = Employee.objects.all()
-        paginator = self.pagination_class()
-        result_page = paginator.paginate_queryset(employees, request)
-        serializer = EmployeeListSerializer(result_page, many=True)
-        return paginator.get_paginated_response(serializer.data)
+    # SEARCH + ORDERING
+    search_fields = ['full_name', 'position', 'phone', 'email']
+    ordering_fields = ['order', 'full_name', 'id']
+    ordering = ('order', 'full_name')
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # FILTERLAR
+    filterset_fields = {
+        'status': ['exact'],
+        'order': ['exact', 'gte', 'lte'],
+        'pages__id': ['exact', 'in'],   # <— BU ENG TO‘G‘RISI!
+    }
 
+    def get_queryset(self):
+        queryset = Employee.objects.all()
 
-@extend_schema(tags=["Employees"])
-class EmployeeDetailAPIView(APIView):
-    """
-    GET    →  Xodim ma'lumotlarini olish
-    PUT    →  Xodimni yangilash
-    DELETE →  Xodimni o‘chirish
-    """
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = EmployeeDetailSerializer
+        # Agar frontchi ?page_id=5 deb yuborsa — ham ishlatamiz
+        page_id = self.request.query_params.get('page_id') or self.request.query_params.get('pages__id')
+        if page_id:
+            try:
+                # Bir nechta id: 1,5,10
+                ids = [int(x) for x in page_id.split(',') if x.isdigit()]
+                if ids:
+                    queryset = queryset.filter(pages__id__in=ids)
+            except:
+                pass  # xato bo‘lsa ignore qilamiz
 
-    def get_object(self, employee_id):
-        return get_object_or_404(Employee, id=employee_id)
+        return queryset.distinct()  # <— MUHIM! duplicate bo‘lmasin
 
-    def get(self, request, employee_id):
-        page = self.get_object(employee_id)
-        serializer = self.serializer_class(page)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_serializer_class(self):
+        return EmployeeDetailSerializer if self.request.method == 'POST' else EmployeeListSerializer
 
-    def put(self, request, employee_id):
-        page = self.get_object(employee_id)
-        serializer = self.serializer_class(page, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, employee_id):
-        page = self.get_object(employee_id)
-        page.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+@extend_schema(tags=["Employees"])
+class EmployeeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeDetailSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = 'id'
 
