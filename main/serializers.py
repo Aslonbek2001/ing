@@ -1,0 +1,21 @@
+from .models import Company
+from rest_framework import serializers
+from menus.serializers.page_serializers import PageListSerializer
+from parts.serializers import CarouselSerializer
+from posts.serializers import PostManageListSerializer
+from menus.serializers.menu_serializers import MenuReadSerializer
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = "__all__"
+
+
+class HomePageSerializer(serializers.Serializer):
+    menu = MenuReadSerializer(many=True)
+    company = CompanySerializer(allow_null=True)
+    carousels = CarouselSerializer(many=True)
+    latest_posts = PostManageListSerializer(many=True)
+    scientific_directions = PageListSerializer(many=True)
+    postgraduate_education = PageListSerializer(many=True)
+

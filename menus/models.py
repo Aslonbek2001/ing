@@ -26,13 +26,15 @@ class Menu(models.Model):
 
 class Page(models.Model):
     PAGE_TYPES = (
-        ('department', 'Bo‘lim'),
+        ('department', "Bo‘lim"),
         ('faculty', 'Kafedra'),
         ('lab', 'Laboratoriya'),
         ('page', 'Sahifa'),
+        ("scientific_direction", "Ilmiy yo‘nalish"),
+        ('postgraduate_education', "Oliy ta'limdan keyingi ta'lim")
     )
     title = models.CharField(max_length=200, db_index=True,)
-    type = models.CharField(max_length=20, db_index=True, choices=PAGE_TYPES, default='page')
+    type = models.CharField(max_length=30, db_index=True, choices=PAGE_TYPES, default='page')
     menu = models.OneToOneField(
         Menu,
         on_delete=models.CASCADE,

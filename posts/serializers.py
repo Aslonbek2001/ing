@@ -19,10 +19,12 @@ class PostManageListSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
     def get_image(self, obj):
-        first_image = obj.images.first()
-        if first_image:
-            return first_image.image.url
-        return None
+        try:
+            first_image = obj.images.first()
+            if first_image:
+                return first_image.image.url
+        except:
+            return None
 
 
 class PostManageSerializer(serializers.ModelSerializer):

@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/', include('posts.urls')),
     path('menu/', include('menus.urls')),
     path('parts/', include('parts.urls')),
+    path('main/', include('main.urls')),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # login
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # refresh
     

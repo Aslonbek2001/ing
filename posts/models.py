@@ -39,9 +39,8 @@ class Post(models.Model):
     
     pages = models.ManyToManyField(
         Page,
-        related_name='posts',
-        null=True,
         blank=True,
+        related_name='posts',
         help_text="Post qaysi sahifalarga tegishli"
     )
 

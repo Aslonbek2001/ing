@@ -24,6 +24,11 @@ class MenuReadSerializer(serializers.ModelSerializer):
     
     
     def get_children(self, obj):
+        try:
+            if not obj.children.exists():
+                return []
+        except:
+            return []
         return MenuReadSerializer(obj.children.all(), many=True).data
 
 
