@@ -32,7 +32,7 @@ class PostManageSerializer(serializers.ModelSerializer):
         write_only=True,
         required=False
     )
-    remove_image_ids = serializers.ListField(
+    exists_image_ids = serializers.ListField(
         child=serializers.IntegerField(),
         write_only=True,
         required=False
@@ -49,12 +49,13 @@ class PostManageSerializer(serializers.ModelSerializer):
             "id", "title_uz", "title_ru", "title_en",
             "description_uz", "description_ru", "description_en",
             "status", "published_date", "type", "pages",
-            "images", "upload_images", "remove_image_ids"
+            "images", "upload_images", "exists_image_ids"
         ]
         read_only_fields = ["id", "images"]
 
     def create(self, validated_data):
         upload_images = validated_data.pop("upload_images", [])
+        validated_data.pop("exists_image_ids", None)
         pages = validated_data.pop("pages", [])
         post = Post.objects.create(**validated_data)
         if pages:
@@ -64,7 +65,7 @@ class PostManageSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         upload_images = validated_data.pop("upload_images", [])
-        remove_ids = validated_data.pop("remove_image_ids", [])
+        exists_ids = validated_data.pop("exists_image_ids", None)
         pages = validated_data.pop("pages", None)
 
         for attr, value in validated_data.items():
@@ -74,8 +75,8 @@ class PostManageSerializer(serializers.ModelSerializer):
         if pages is not None:
             instance.pages.set(pages)
 
-        if remove_ids:
-            instance.images.filter(id__in=remove_ids).delete()
+        if exists_ids is not None:
+            instance.images.exclude(id__in=exists_ids).delete()
 
         self._create_images(instance, upload_images)
         return instance

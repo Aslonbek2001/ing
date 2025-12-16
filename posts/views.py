@@ -13,37 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 
 
-# @extend_schema(tags=["News & Announcements"])
-# class PostViewSet(viewsets.ModelViewSet):
-#     queryset = Post.objects.all().order_by("-published_date")
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     pagination_class = CustomPageNumberPagination
-#     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-#     filterset_fields = ["status", "type"]
-#     search_fields = [
-#         "title_uz", "title_ru", "title_en"
-#     ]
-#     ordering_fields = ["published_date"]
-
-#     def get_queryset(self):
-#         qs = Post.objects.prefetch_related(
-#             Prefetch("images", queryset=PostImages.objects.only("id", "image"))
-#         )
-#         if self.action == "list":
-#             return qs.only(
-#                 "id", "title_uz", "title_ru", "title_en", "status", "published_date", "type"
-#             ).order_by("-published_date")
-#         return qs.order_by("-published_date")
-
-#     def get_serializer_class(self):
-#         if self.action == "list":
-#             return PostListSerializer
-#         elif self.action == "create":
-#             return PostCreateSerializer
-        
-#         return PostDetailSerializer
-
-
 @extend_schema(tags=["News & Announcements"])
 class PostManageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]

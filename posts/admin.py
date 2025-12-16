@@ -3,7 +3,7 @@ from .models import Post, PostImages
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'published_date', 'status', 'type']
+    list_display = ['id', 'title', 'published_date', 'status', 'type']
     search_fields = ['title']
 
 @admin.register(PostImages)
