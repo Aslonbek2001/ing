@@ -4,10 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from .models import Post, PostImages
 from .serializers import (
-    PostListSerializer,
-    PostDetailSerializer,
     PostImageSerializer,
-    PostCreateSerializer,
     PostManageListSerializer,
     PostManageSerializer,
 )
@@ -59,6 +56,7 @@ class PostManageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Post.objects.prefetch_related(
+            "pages",
             Prefetch("images", queryset=PostImages.objects.only("id", "image", "post_id"))
         ).order_by("-published_date")
 
@@ -95,4 +93,3 @@ class PostImageViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs.get("post_pk")
         post = get_object_or_404(Post, id=post_id)
         serializer.save(post=post)
-
