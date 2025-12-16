@@ -1,5 +1,5 @@
-from .models import Carousel
-from .serializers import CarouselSerializer
+from parts.models import Carousel
+from parts.serializers import CarouselSerializer
 from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly

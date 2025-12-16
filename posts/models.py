@@ -1,6 +1,7 @@
 from django.db import models
 from versatileimagefield.fields import VersatileImageField
 from core.mixins import auto_delete_image_with_renditions
+from menus.models import Page
 from django.utils import timezone
 
 type_choices = (
@@ -34,6 +35,14 @@ class Post(models.Model):
         choices=type_choices,
         default="news",
         help_text="Turini tanlang"
+    )
+    
+    pages = models.ManyToManyField(
+        Page,
+        related_name='posts',
+        null=True,
+        blank=True,
+        help_text="Post qaysi sahifalarga tegishli"
     )
 
     class Meta:

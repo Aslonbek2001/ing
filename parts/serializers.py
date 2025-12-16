@@ -1,4 +1,4 @@
-from parts.models import Carousel
+from parts.models import Carousel, Application
 from rest_framework import serializers
 
 
@@ -12,3 +12,10 @@ class CarouselSerializer(serializers.ModelSerializer):
                     "image", "link", "position", "status"
                 ]
         read_only_fields = ["id"]
+
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = "__all__"
+        read_only_fields = ["id", "submitted_at"]

@@ -17,4 +17,16 @@ class Carousel(models.Model):
         return self.title
 
 
+class Application(models.Model):
+    name = models.CharField(max_length=255, db_index=True)
+    phone = models.CharField(max_length=20, db_index=True)
+    message = models.TextField(blank=True, null=True, db_index=True)
+    submitted_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-submitted_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.phone}"
+
 auto_delete_image_with_renditions(Carousel, "image")

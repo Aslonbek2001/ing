@@ -26,5 +26,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-# 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
+# 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
 

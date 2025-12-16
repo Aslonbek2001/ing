@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'menus.apps.MenusConfig',
     'parts.apps.PartsConfig',
+    'main.apps.MainConfig',
 
 
     "corsheaders",
