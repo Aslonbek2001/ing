@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     "corsheaders",
     'rest_framework_simplejwt',
+    'django_filters',
     'rest_framework',
     'drf_spectacular',
     'versatileimagefield',
