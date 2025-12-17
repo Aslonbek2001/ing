@@ -24,10 +24,16 @@ class PostManageViewSet(viewsets.ModelViewSet):
     ordering = ["-published_date"]
 
     def get_queryset(self):
-        return Post.objects.prefetch_related(
+        qs = Post.objects.prefetch_related(
             "pages",
-            Prefetch("images", queryset=PostImages.objects.only("id", "image", "post_id"))
+            Prefetch("images", queryset=PostImages.objects.all())
         ).order_by("-published_date")
+
+        # Agar user ro‘yxatdan o‘tmagan bo‘lsa
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(status=True)
+
+        return qs
 
     def get_serializer_class(self):
         if self.action == "list":

@@ -15,7 +15,7 @@ class PostManageListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "title_uz", "title_ru", "title_en", "image", "pages"]
+        fields = ["id", "title_uz", "title_ru", "title_en", "image", "pages", "published_date", "status", "type"]
         read_only_fields = ["id"]
 
     def get_image(self, obj):
