@@ -43,7 +43,9 @@ class EmployeeListCreateAPIView(generics.ListCreateAPIView):
         return queryset.distinct()  # <— MUHIM! duplicate bo‘lmasin
 
     def get_serializer_class(self):
-        return EmployeeDetailSerializer if self.request.method == 'POST' else EmployeeListSerializer
+        if self.request.method == 'POST':
+            return EmployeeDetailSerializer
+        return EmployeeListSerializer
 
     
 @extend_schema(tags=["Employees"])
@@ -52,4 +54,3 @@ class EmployeeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeeDetailSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
-

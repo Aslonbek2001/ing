@@ -11,12 +11,6 @@ class EmployeeListSerializer(serializers.ModelSerializer):
                     "order", "pages",
                     "phone", "email", "image"
                 ]
-    
-    def create(self, validated_data):
-        pages = validated_data.pop("pages", [])
-        employee = Employee.objects.create(**validated_data)
-        employee.pages.set(pages)
-        return employee
 
 
 
@@ -31,6 +25,13 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
                     "order", "pages",
                     "phone", "email", "image"
                 ]
+
+    def create(self, validated_data):
+        pages = validated_data.pop("pages", [])
+        employee = Employee.objects.create(**validated_data)
+        if pages:
+            employee.pages.set(pages)
+        return employee
     
     def update(self, instance, validated_data):
         pages = validated_data.pop("pages", None)
@@ -41,4 +42,3 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
             instance.pages.set(pages)
         return instance
         
-
