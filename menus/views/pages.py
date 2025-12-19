@@ -6,7 +6,7 @@ from menus.services.page_services import PageService
 from menus.models import Page
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from core.pagination import CustomPageNumberPagination
 from menus.serializers.page_serializers import (
     PageDetailSerializerForUsers, PageListSerializer, 
@@ -33,12 +33,22 @@ class PageDetailForUsers(APIView):
     tags=["Admin - Page"],
     summary="List and Create Pages",
     description="Allows admin users to list all pages or create a new page.",
+    parameters=[
+        OpenApiParameter(
+            name="type",
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+            required=False,
+            enum=[choice[0] for choice in Page.PAGE_TYPES],
+            description="Filter pages by type.",
+        ),
+    ],
 )
 class PageListCreateAPIView(generics.ListCreateAPIView):
     queryset = Page.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["status", "menu", "title"]
+    filterset_fields = ["status", "menu", "title", "type"]
     serializer_class = PageSerializer
     pagination_class = CustomPageNumberPagination
 
