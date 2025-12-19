@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from menus.models import  Employee
+from menus.models import Employee, Page
 
 class EmployeeListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,6 +15,12 @@ class EmployeeListSerializer(serializers.ModelSerializer):
 
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):
+    pages = serializers.PrimaryKeyRelatedField(
+        queryset=Page.objects.all(),
+        many=True,
+        required=False,
+    )
+
     class Meta:
         model = Employee
         fields = [
@@ -25,6 +31,13 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
                     "order", "pages",
                     "phone", "email", "image"
                 ]
+
+    def to_internal_value(self, data):
+        data = data.copy()
+        pages = data.get("pages")
+        if isinstance(pages, str):
+            data["pages"] = [p.strip() for p in pages.split(",") if p.strip()]
+        return super().to_internal_value(data)
 
     def create(self, validated_data):
         pages = validated_data.pop("pages", [])
