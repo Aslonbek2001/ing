@@ -34,9 +34,6 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         pages = validated_data.pop("pages", [])
-        print("##########################")
-        print(pages)
-        print("##########################")
         employee = Employee.objects.create(**validated_data)
         if pages:
             employee.pages.set(pages)

@@ -23,7 +23,7 @@ class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     filterset_fields = {
         'status': ['exact'],
         'order': ['exact', 'gte', 'lte'],
-        # 'pages__id': ['exact', 'in'],   # <— BU ENG TO‘G‘RISI!
+        'pages__id': ['exact', 'in'],   # <— BU ENG TO‘G‘RISI!
     }
 
     def get_queryset(self):
