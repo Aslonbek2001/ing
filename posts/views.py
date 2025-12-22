@@ -62,7 +62,10 @@ class PostImageViewSet(viewsets.ModelViewSet):
         if getattr(self, "swagger_fake_view", False):
             return PostImages.objects.none()
         post_id = self.kwargs.get("post_pk")  # url dan keladi
-        post = get_object_or_404(Post, id=post_id)
+        if self.request.user.is_authenticated:
+            post = get_object_or_404(Post, id=post_id)
+        else:
+            post = get_object_or_404(Post, id=post_id, status=True)
         return post.images.all()
 
 

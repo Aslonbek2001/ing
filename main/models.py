@@ -1,4 +1,5 @@
 from django.db import models
+from core.mixins import auto_delete_image_with_renditions
 
 
 class Company(models.Model):
@@ -21,7 +22,9 @@ class Company(models.Model):
     phone_number = models.CharField(max_length=20)
     email = models.EmailField()
 
-    
+
+
+auto_delete_image_with_renditions(Company, "logo")
 
 
     

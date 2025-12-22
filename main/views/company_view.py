@@ -73,14 +73,14 @@ class CompanyAPIView(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @extend_schema(
-        tags=["Company"],
-        description="Company o'chirish.",
-        responses={204: OpenApiResponse(description="Deleted.")},
-    )
-    def delete(self, request, *args, **kwargs):
-        company = self.get_object()
-        if not company:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        company.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # @extend_schema(
+    #     tags=["Company"],
+    #     description="Company o'chirish.",
+    #     responses={204: OpenApiResponse(description="Deleted.")},
+    # )
+    # def delete(self, request, *args, **kwargs):
+    #     company = self.get_object()
+    #     if not company:
+    #         return Response(status=status.HTTP_204_NO_CONTENT)
+    #     company.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
