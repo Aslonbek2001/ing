@@ -5,13 +5,19 @@ from rest_framework.views import APIView
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 
 from menus.models import Employee, Menu, Page, PageFiles
-from posts.models import Post
 from parts.models import Carousel
+from posts.models import Post
+from menus.serializers.employee_serializers import EmployeeListSerializer
+from menus.serializers.menu_serializers import MenuReadSerializer
+from menus.serializers.page_serializers import PageFileSerializer, PageListSerializer
+from posts.serializers import PostManageListSerializer
+from parts.serializers import CarouselSerializer
 
 
 @extend_schema(
     tags=["Search"],
     description="Project bo'yicha umumiy qidiruv.",
+    responses={200: OpenApiTypes.OBJECT},
     parameters=[
         OpenApiParameter(
             name="q",
@@ -68,7 +74,7 @@ class FullSearchAPIView(APIView):
                 | Q(title_ru__icontains=query)
                 | Q(title_en__icontains=query)
             )
-        ).values("id", "title_uz", "title_ru", "title_en", "status")[:limit]
+        )[:limit]
 
         pages = with_status(
             Page.objects.filter(
@@ -79,14 +85,6 @@ class FullSearchAPIView(APIView):
                 | Q(description_ru__icontains=query)
                 | Q(description_en__icontains=query)
             )
-        ).values(
-            "id",
-            "title_uz",
-            "title_ru",
-            "title_en",
-            "type",
-            "slug",
-            "status",
         )[:limit]
 
         posts = with_status(
@@ -98,14 +96,6 @@ class FullSearchAPIView(APIView):
                 | Q(description_ru__icontains=query)
                 | Q(description_en__icontains=query)
             )
-        ).values(
-            "id",
-            "title_uz",
-            "title_ru",
-            "title_en",
-            "published_date",
-            "type",
-            "status",
         )[:limit]
 
         employees = with_status(
@@ -120,15 +110,6 @@ class FullSearchAPIView(APIView):
                 | Q(description_ru__icontains=query)
                 | Q(description_en__icontains=query)
             )
-        ).values(
-            "id",
-            "full_name_uz",
-            "full_name_ru",
-            "full_name_en",
-            "position_uz",
-            "position_ru",
-            "position_en",
-            "status",
         )[:limit]
 
         page_files = with_status(
@@ -137,7 +118,7 @@ class FullSearchAPIView(APIView):
                 | Q(title_ru__icontains=query)
                 | Q(title_en__icontains=query)
             )
-        ).values("id", "title_uz", "title_ru", "title_en", "status")[:limit]
+        )[:limit]
 
         carousels = with_status(
             Carousel.objects.filter(
@@ -148,19 +129,19 @@ class FullSearchAPIView(APIView):
                 | Q(description_ru__icontains=query)
                 | Q(description_en__icontains=query)
             )
-        ).values("id", "title_uz", "title_ru", "title_en", "status")[:limit]
+        )[:limit]
 
         return Response(
             {
                 "query": query,
                 "limit": limit,
                 "results": {
-                    "menus": list(menus),
-                    "pages": list(pages),
-                    "posts": list(posts),
-                    "employees": list(employees),
-                    "page_files": list(page_files),
-                    "carousels": list(carousels),
+                    "menus": MenuReadSerializer(menus, many=True).data,
+                    "pages": PageListSerializer(pages, many=True).data,
+                    "posts": PostManageListSerializer(posts, many=True).data,
+                    "employees": EmployeeListSerializer(employees, many=True).data,
+                    "page_files": PageFileSerializer(page_files, many=True).data,
+                    "carousels": CarouselSerializer(carousels, many=True).data,
                 },
             }
         )

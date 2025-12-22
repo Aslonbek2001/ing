@@ -17,13 +17,13 @@ class MenuReadSerializer(serializers.ModelSerializer):
     
     
 
-    def get_page_slug(self, obj):
+    def get_page_slug(self, obj) -> str | None:
         if hasattr(obj, 'page') and obj.page:
             return obj.page.slug
         return None
     
     
-    def get_children(self, obj):
+    def get_children(self, obj)-> list:
         try:
             if not obj.children.exists():
                 return []

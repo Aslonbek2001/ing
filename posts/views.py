@@ -59,6 +59,8 @@ class PostImageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return PostImages.objects.none()
         post_id = self.kwargs.get("post_pk")  # url dan keladi
         post = get_object_or_404(Post, id=post_id)
         return post.images.all()

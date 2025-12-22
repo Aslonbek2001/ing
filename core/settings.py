@@ -64,7 +64,11 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'University Project API',
     'DESCRIPTION': 'University project description',
     'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False
+    'SERVE_INCLUDE_SCHEMA': False,
+    "ENUM_NAME_OVERRIDES": {
+        "PostTypeEnum": "posts.models.type_choices",
+        "PageTypeEnum": "menus.models.Page.PAGE_TYPES",
+    },
 }
 
 

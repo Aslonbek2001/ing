@@ -57,7 +57,7 @@ class Page(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['title', 'type', 'status']),
-            models.Index(fields=['title_uz', 'title_ru', 'title_en'], name='page_trans_titles_idx'),  # For translated fields
+            models.Index(fields=['title_uz', 'title_ru', 'title_en'], name='page_trans_titles_idx'),
         ]
     
 

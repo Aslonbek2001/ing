@@ -13,8 +13,8 @@ class HomePageView(APIView):
     @extend_schema(
         tags=["Home Page"],
         description="Bosh sahifa uchun ma'lumotlar",
+        responses={200: HomePageSerializer},
     )
-
     def get(self, request, *args, **kwargs):
         menu = HomePageService.get_navbar()
         company = HomePageService.get_company_info()
@@ -40,7 +40,6 @@ class HomePageView(APIView):
 
 
         
-
 
 
 

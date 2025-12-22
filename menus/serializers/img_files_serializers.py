@@ -10,10 +10,19 @@ class PageImageSerializer(serializers.ModelSerializer):
 
 
 class PageFileSerializer(serializers.ModelSerializer):
+    page_slug = serializers.SerializerMethodField()
     class Meta:
         model = PageFiles
         fields = [
-                    "id", "page",
+                    "id", "page", "page_slug",
                     'title_uz', 'title_ru', 'title_en',
                     "file", "position", "status"
                 ]
+        
+    def get_page_slug(self, obj) -> str | None:
+        try:
+            return obj.page.slug
+        except:
+            return None
+
+

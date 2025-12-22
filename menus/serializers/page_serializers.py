@@ -52,7 +52,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
                     "slug", "status", "images", "employees", "files", "posts"
                 ]
     
-    def get_posts(self, obj):
+    def get_posts(self, obj) -> list:
         try:
             if not obj.posts.exists():
                 return []
