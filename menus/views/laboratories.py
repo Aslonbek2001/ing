@@ -13,22 +13,6 @@ from menus.serializers.page_serializers import (
     PageSerializer, PageListSerializerForUsers
 )
 
-
-@extend_schema( tags=["Users - Page"])
-class PageDetailForUsers(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PageDetailSerializerForUsers
-    def get(self, request, slug):
-        page = PageService.get_page_by_slug_for_users(slug)
-        serializer = self.serializer_class(page)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
-
-# ===============================
-# 📋 ADMIN - Page List & Create
-# ===============================
 @extend_schema(
     tags=["Admin - Page"],
     summary="List and Create Pages",
@@ -72,25 +56,4 @@ class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(status=True)
         return Page.objects.all()
-
-
-
-@extend_schema(tags=["All Pages for Selection"])
-class AllPagesForSelection(generics.ListAPIView):
-    queryset = Page.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["title_uz", "title_ru", "title_en"]  
-    search_fields = ["id", "^title_uz", "^title_ru", "^title_en"]
-    serializer_class = PageListSerializerForUsers
-
-    def get_queryset(self):
-        # Use .only() to fetch only required fields, reducing data transfer
-        qs = Page.objects.only("id", "title_uz", "title_ru", "title_en")
-        # Add index check for optimization (ensure indexes exist in model)
-        if getattr(self, "swagger_fake_view", False):
-            return Page.objects.none()  # For schema generation
-        return qs
-
-
-
+    
