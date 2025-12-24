@@ -4,6 +4,8 @@ from menus.serializers.page_serializers import PageListSerializer
 from parts.serializers import CarouselSerializer
 from posts.serializers import PostManageListSerializer
 from menus.serializers.menu_serializers import MenuReadSerializer
+from menus.serializers.scientific_direction_serializers import ScientificDirectionListSerializer
+from menus.serializers.postgraduate_education_serializers import PostgraduateEducationListSerializer
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,6 +18,6 @@ class HomePageSerializer(serializers.Serializer):
     company = CompanySerializer(allow_null=True)
     carousels = CarouselSerializer(many=True)
     latest_posts = PostManageListSerializer(many=True)
-    scientific_directions = PageListSerializer(many=True)
-    postgraduate_education = PageListSerializer(many=True)
+    scientific_directions = ScientificDirectionListSerializer(many=True)
+    postgraduate_education = PostgraduateEducationListSerializer(many=True)
 
