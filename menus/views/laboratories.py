@@ -1,20 +1,14 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend, filters
-from rest_framework import generics, status
-from menus.services.page_services import PageService
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
 from menus.models import Page
-from rest_framework import filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
+from django.shortcuts import get_object_or_404
 from core.pagination import CustomPageNumberPagination
-from menus.serializers.page_serializers import (
-    PageDetailSerializerForUsers, PageListSerializer, 
-    PageSerializer, PageListSerializerForUsers
-)
+from menus.serializers.labser import LabSer, LabDetailSer
 
 @extend_schema(
-    tags=["Admin - Page"],
+    tags=["Laboratories"],
     summary="List and Create Pages",
     description="Allows admin users to list all pages or create a new page.",
     parameters=[
@@ -28,32 +22,51 @@ from menus.serializers.page_serializers import (
         ),
     ],
 )
-class PageListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Page.objects.all()
+class LabListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Page.objects.filter(type="lab").order_by("position")
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "menu", "title", "type"]
-    serializer_class = PageSerializer
+    serializer_class = LabSer
     pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == "GET":
-            return PageListSerializer
-        return PageSerializer
+            return LabSer
+        return LabSer
+    
+    def perform_create(self, serializer):
+        serializer.save(type="lab")
 
 
 @extend_schema(
-    tags=["Admin - Page"],
+    tags=["Laboratories"],
     summary="Retrieve, Update, or Delete a Page",
-    description="Retrieve, partially update, or delete a specific page by slug.",
+    description="Retrieve, partially update, or delete a specific page by id or slug.",
+    parameters=[
+        OpenApiParameter(
+            name="lookup",
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.PATH,
+            required=True,
+            description="Page id (numeric) or slug.",
+        ),
+    ],
 )
-class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PageSerializer
+class LabDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = LabDetailSer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    lookup_field = "id"
+    lookup_field = "lookup"
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(status=True)
         return Page.objects.all()
+
+    def get_object(self):
+        lookup_value = self.kwargs.get(self.lookup_field)
+        queryset = self.get_queryset()
+        if lookup_value is not None and lookup_value.isdigit():
+            return get_object_or_404(queryset, id=int(lookup_value))
+        return get_object_or_404(queryset, slug=lookup_value)
     

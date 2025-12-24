@@ -54,15 +54,13 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     
     def get_posts(self, obj) -> list:
         try:
-            if not obj.posts.exists():
-                return []
+            if obj.posts.exists():
+                posts_qs = obj.posts.filter(status=True)
+                return PostManageListSerializer(posts_qs, many=True).data
         except:
             return []
         
-        posts_qs = obj.posts.filter(status=True)
-        return PostManageListSerializer(posts_qs, many=True).data
-
-
+    
 
 class PageListSerializerForUsers(serializers.ModelSerializer):
 

@@ -7,13 +7,13 @@ class MenuTranslationOptions(TranslationOptions):
 
 
 @register(Page)
-class PostTranslationOptions(TranslationOptions):
-    fields = ("title", "description")
+class PageTranslationOptions(TranslationOptions):
+    fields = ("title", "description", "sub_title", "direction",)
 
 @register(Employee)
-class PostTranslationOptions(TranslationOptions):
+class PageTranslationOptions(TranslationOptions):
     fields = ("full_name", "position", "description")
 
 @register(PageFiles)
-class PostTranslationOptions(TranslationOptions):
+class PageTranslationOptions(TranslationOptions):
     fields = ("title",)

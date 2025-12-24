@@ -34,6 +34,11 @@ class Page(models.Model):
         ('postgraduate_education', "Oliy ta'limdan keyingi ta'lim")
     )
     title = models.CharField(max_length=200, db_index=True,)
+    sub_title = models.TextField(null=True, blank=True, db_index=True)
+    direction = models.CharField(null=True, blank=True, max_length=250)
+    duration = models.IntegerField(null=True, blank=True)
+    position = models.IntegerField(null=True, blank=True)
+    logo = models.TextField(null=True, blank=True)
     type = models.CharField(max_length=30, db_index=True, choices=PAGE_TYPES, default='page')
     menu = models.OneToOneField(
         Menu,
