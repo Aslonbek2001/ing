@@ -7,6 +7,7 @@ from menus.views.pages import PageListCreateAPIView, PageDetailAPIView, PageDeta
 from menus.views.employees import EmployeeListCreateAPIView, EmployeeDetailAPIView
 from menus.views.img_file_views import PageFileDetailAPIView, PageFileListCreateAPIView, PageImageDetailAPIView, PageImageListCreateAPIView
 from menus.views.laboratories import LabListCreateAPIView, LabDetailAPIView
+from menus.views.departments import DepartmentListCreateAPIView, DepartmentDetailAPIView
 from menus.views.postgraduate_education import PostgraduateEducationDetailAPIView, PostgraduateEducationListCreateAPIView
 from menus.views.scientific_direction import ScientificDirectionDetailAPIView, ScientificDirectionListCreateAPIView
 
@@ -25,6 +26,9 @@ urlpatterns = [
     # Laboratories
     path("laboratories/", LabListCreateAPIView.as_view(), name="laboratory-list-create"),
     path("laboratories/<str:lookup>/", LabDetailAPIView.as_view(), name="laboratory-detail"),
+    # departments
+    path("departments/", DepartmentListCreateAPIView.as_view(), name="department-list-create"),
+    path("departments/<str:lookup>/", DepartmentDetailAPIView.as_view(), name="department-detail"),
     # postgraduate-education
     path("postgraduate-education/", PostgraduateEducationListCreateAPIView.as_view(), name="postgraduate-education-list-create"),
     path("postgraduate-education/<str:lookup>/", PostgraduateEducationDetailAPIView.as_view(), name="postgraduate-education-detail"),

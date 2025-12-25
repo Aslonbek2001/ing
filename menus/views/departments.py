@@ -5,10 +5,14 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from django.shortcuts import get_object_or_404
 from core.pagination import CustomPageNumberPagination
-from menus.serializers.labser import LabSer, LabDetailSer
+from menus.serializers.departments_serializers import (
+    DepartmentListSerializer,
+    DepartmentSerializer,
+)
+
 
 @extend_schema(
-    tags=["Laboratories"],
+    tags=["Departments"],
     summary="List and Create Pages",
     description="Allows admin users to list all pages or create a new page.",
     parameters=[
@@ -22,25 +26,25 @@ from menus.serializers.labser import LabSer, LabDetailSer
         ),
     ],
 )
-class LabListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Page.objects.filter(type="lab").order_by("position")
+class DepartmentListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Page.objects.filter(type="department").order_by("position")
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "menu", "title", "type"]
-    serializer_class = LabSer
+    serializer_class = DepartmentSerializer
     pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == "GET":
-            return LabSer
-        return LabDetailSer
-    
+            return DepartmentListSerializer
+        return DepartmentSerializer
+
     def perform_create(self, serializer):
-        serializer.save(type="lab")
+        serializer.save(type="department")
 
 
 @extend_schema(
-    tags=["Laboratories"],
+    tags=["Departments"],
     summary="Retrieve, Update, or Delete a Page",
     description="Retrieve, partially update, or delete a specific page by id or slug.",
     parameters=[
@@ -53,8 +57,8 @@ class LabListCreateAPIView(generics.ListCreateAPIView):
         ),
     ],
 )
-class LabDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = LabDetailSer
+class DepartmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = DepartmentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "lookup"
 
@@ -69,4 +73,3 @@ class LabDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if lookup_value is not None and lookup_value.isdigit():
             return get_object_or_404(queryset, id=int(lookup_value))
         return get_object_or_404(queryset, slug=lookup_value)
-    

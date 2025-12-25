@@ -48,6 +48,9 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
         fields = [
                     "id", "menu",
                     'title_uz', 'title_ru', 'title_en',
+                    "logo", "position", "duration",
+                    "sub_title_uz", "sub_title_ru", "sub_title_en",
+                    "direction_uz", "direction_ru", "direction_en",
                     'description_uz', 'description_ru', 'description_en',
                     "slug", "status", "images", "employees", "files", "posts"
                 ]

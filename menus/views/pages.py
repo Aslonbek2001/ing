@@ -45,7 +45,7 @@ class PageDetailForUsers(APIView):
     ],
 )
 class PageListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Page.objects.all()
+    queryset = Page.objects.filter(type="page")
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["status", "menu", "title", "type"]
