@@ -8,7 +8,7 @@ class MenuTranslationOptions(TranslationOptions):
 
 @register(Page)
 class PageTranslationOptions(TranslationOptions):
-    fields = ("title", "description", "sub_title", "direction",)
+    fields = ("title", "description", "sub_title", "direction", "duration")
 
 @register(Employee)
 class PageTranslationOptions(TranslationOptions):
