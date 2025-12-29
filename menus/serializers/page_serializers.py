@@ -15,8 +15,7 @@ class PageListSerializer(serializers.ModelSerializer):
         model = Page
         fields = [
                     "id", 
-                    'title_uz', 'title_ru', 'title_en',
-                    "status", "type", "slug", "menu"
+                    "title_uz", 'title_ru', 'title_en', "status", "type", "slug", "menu"
                 ]
 
 
@@ -47,10 +46,10 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
         model = Page
         fields = [
                     "id", "menu",
-                    'title_uz', 'title_ru', 'title_en',
-                    "logo", "position", "duration",
+                    'title_uz', 'title_ru', 'title_en', "logo", "position",
                     "sub_title_uz", "sub_title_ru", "sub_title_en",
                     "direction_uz", "direction_ru", "direction_en",
+                    "duration_uz", "duration_ru", "duration_en",
                     'description_uz', 'description_ru', 'description_en',
                     "slug", "status", "images", "employees", "files", "posts"
                 ]
