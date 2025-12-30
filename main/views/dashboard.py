@@ -2,7 +2,7 @@ from menus.models import Page, Menu, Employee, PageFiles
 from parts.models import Carousel, Application
 from posts.models import Post, PostImages
 from django.db.models import Count, Q
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
@@ -10,7 +10,7 @@ from main.serializers import DashboardSerializer
 from main.service import DashboardService
 
 class DashboardView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = DashboardSerializer
 
     @extend_schema(
