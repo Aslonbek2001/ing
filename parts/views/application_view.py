@@ -3,7 +3,6 @@ from parts.serializers import ApplicationSerializer
 from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from rest_framework import status
 from drf_spectacular.utils import extend_schema
 from core.pagination import CustomPageNumberPagination
 
@@ -49,5 +48,10 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()) 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

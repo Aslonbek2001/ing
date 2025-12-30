@@ -26,10 +26,10 @@ urlpatterns = [
     # Laboratories
     path("laboratories/", LabListCreateAPIView.as_view(), name="laboratory-list-create"),
     path("laboratories/<str:lookup>/", LabDetailAPIView.as_view(), name="laboratory-detail"),
-    # departments
+    # Departments
     path("departments/", DepartmentListCreateAPIView.as_view(), name="department-list-create"),
     path("departments/<str:lookup>/", DepartmentDetailAPIView.as_view(), name="department-detail"),
-    # postgraduate-education
+    # Postgraduate-education
     path("postgraduate-education/", PostgraduateEducationListCreateAPIView.as_view(), name="postgraduate-education-list-create"),
     path("postgraduate-education/<str:lookup>/", PostgraduateEducationDetailAPIView.as_view(), name="postgraduate-education-detail"),
     #scientific-direction
