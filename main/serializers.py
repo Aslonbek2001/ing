@@ -21,3 +21,12 @@ class HomePageSerializer(serializers.Serializer):
     scientific_directions = ScientificDirectionListSerializer(many=True)
     postgraduate_education = PostgraduateEducationListSerializer(many=True)
 
+class DashboardItems(serializers.Serializer):
+    name = serializers.CharField()
+    total_count = serializers.IntegerField()
+    active_count = serializers.IntegerField()
+    inactive_count = serializers.IntegerField()
+    images_count = serializers.IntegerField(required=False)
+
+class DashboardSerializer(serializers.Serializer):
+    dashboard = DashboardItems(many=True)
