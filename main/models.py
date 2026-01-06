@@ -9,7 +9,7 @@ class Company(models.Model):
     address_uz = models.TextField()
     address_ru = models.TextField()
     address_en = models.TextField()
-    logo = models.ImageField(upload_to='company_logos/')
+    logo = models.FileField(upload_to="company_logos/")
     stat_1 = models.CharField(max_length=50)
     stat_2 = models.CharField(max_length=50)
     stat_3 = models.CharField(max_length=50)
