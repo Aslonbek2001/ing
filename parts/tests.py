@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIRequestFactory
 
 from parts.models import Application, Carousel
+from parts.views.application_view import ApplicationPermission
 
 
 class CarouselAPITests(APITestCase):
@@ -102,7 +104,8 @@ class ApplicationAPITests(APITestCase):
         self.client.force_authenticate(self.user)
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        returned_ids = {item["id"] for item in response.data}
+        payload = response.data.get("results", response.data)
+        returned_ids = {item["id"] for item in payload}
         self.assertSetEqual(returned_ids, {self.app1.id, self.app2.id})
 
     def test_anonymous_user_cannot_list_applications(self):
@@ -120,3 +123,50 @@ class ApplicationAPITests(APITestCase):
         data = {"name": "Delta", "phone": "+998909998877", "message": "Nope"}
         response = self.client.post(self.list_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_authenticated_user_can_delete_application(self):
+        self.client.force_authenticate(self.user)
+        detail_url = reverse("application-detail", args=[self.app1.id])
+        response = self.client.delete(detail_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Application.objects.filter(id=self.app1.id).exists())
+
+    def test_anonymous_user_cannot_delete_application(self):
+        detail_url = reverse("application-detail", args=[self.app1.id])
+        response = self.client.delete(detail_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class ApplicationPermissionTests(APITestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.permission = ApplicationPermission()
+        self.user = get_user_model().objects.create_user(
+            username="perm-user",
+            password="pass123",
+        )
+
+    def test_authenticated_user_can_read(self):
+        request = self.factory.get("/applications/")
+        request.user = self.user
+        self.assertTrue(self.permission.has_permission(request, None))
+
+    def test_anonymous_user_cannot_read(self):
+        request = self.factory.get("/applications/")
+        request.user = AnonymousUser()
+        self.assertFalse(self.permission.has_permission(request, None))
+
+    def test_anonymous_user_can_create(self):
+        request = self.factory.post("/applications/")
+        request.user = AnonymousUser()
+        self.assertTrue(self.permission.has_permission(request, None))
+
+    def test_authenticated_user_cannot_create(self):
+        request = self.factory.post("/applications/")
+        request.user = self.user
+        self.assertFalse(self.permission.has_permission(request, None))
+
+    def test_authenticated_user_can_delete(self):
+        request = self.factory.delete("/applications/1/")
+        request.user = self.user
+        self.assertTrue(self.permission.has_permission(request, None))

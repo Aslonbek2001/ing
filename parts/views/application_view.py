@@ -8,13 +8,17 @@ from core.pagination import CustomPageNumberPagination
 
 
 class ApplicationPermission(BasePermission):
-    """Allow only anonymous users to create and authenticated users to read."""
+    """
+        Allow only anonymous users to create and authenticated users to read.
+    """
 
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
             return request.user.is_authenticated
         if request.method == "POST":
             return not request.user.is_authenticated
+        if request.method == "DELETE":
+            return request.user.is_authenticated
         return False
 
 
