@@ -44,7 +44,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
-                    "id", "menu", "labs", "departments",
+                    "id", "menu", "labs", "departments", "type",
                     'title_uz', 'title_ru', 'title_en', "logo", "position",
                     "sub_title_uz", "sub_title_ru", "sub_title_en",
                     "direction_uz", "direction_ru", "direction_en",
