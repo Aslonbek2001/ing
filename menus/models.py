@@ -29,6 +29,7 @@ class Page(models.Model):
         ('department', "Bo‘lim"),
         ('faculty', 'Kafedra'),
         ('lab', 'Laboratoriya'),
+        ('leadership', 'Rahbariyat'),
         ('page', 'Sahifa'),
         ("scientific_direction", "Ilmiy yo‘nalish"),
         ('postgraduate_education', "Oliy ta'limdan keyingi ta'lim")
