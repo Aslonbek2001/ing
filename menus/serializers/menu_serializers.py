@@ -42,7 +42,7 @@ class MenuReadSerializer(serializers.ModelSerializer):
 class MenuWriteSerializer(serializers.ModelSerializer):
 
     page_slug = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    page_type = serializers.CharField(required=True)
+    page_type = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     class Meta:
         model = Menu
