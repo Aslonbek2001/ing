@@ -28,6 +28,7 @@ class Page(models.Model):
     PAGE_TYPES = (
         ('department', "Bo‘lim"),
         ('faculty', 'Kafedra'),
+        ('news', 'Yangiliklar'),
         ('lab', 'Laboratoriya'),
         ('leadership', 'Rahbariyat'),
         ('page', 'Sahifa'),
