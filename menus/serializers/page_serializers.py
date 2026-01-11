@@ -57,9 +57,9 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
         try:
             if obj.type == 'lab':
                 labs_qs = Page.objects.filter(type='lab', status=True).order_by('position')
-                from .departments_serializers import DepartmentListSerializer
-                return DepartmentListSerializer(labs_qs, many=True).data
-            
+                from .labser import LabSer
+                return LabSer(labs_qs, many=True).data
+                
             return []
         except:
             return []
@@ -69,8 +69,8 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
             if obj.type == 'department':
                 depts_qs = Page.objects.filter(type='department', status=True).order_by('position')
                 # Local import to avoid circular dependency with labser.
-                from .labser import LabSer
-                return LabSer(depts_qs, many=True).data
+                from .departments_serializers import DepartmentListSerializer
+                return DepartmentListSerializer(depts_qs, many=True).data
             
             return []
         except:
