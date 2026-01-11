@@ -56,6 +56,7 @@ class MenuAPITests(APITestCase):
             "title_uz": "New menu uz",
             "title_ru": "New menu ru",
             "title_en": "New menu en",
+            "page_type": "page",
             "status": True,
             "position": 5,
             "parent": None,
@@ -69,6 +70,7 @@ class MenuAPITests(APITestCase):
         menu = Menu.objects.select_related("page").get(id=created_id)
         self.assertIsNotNone(menu.page)
         self.assertEqual(menu.page.slug, payload["page_slug"])
+        self.assertEqual(menu.page.type, payload["page_type"])
 
 
 class PageAPITests(APITestCase):

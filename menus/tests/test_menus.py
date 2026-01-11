@@ -60,6 +60,7 @@ class MenuListCreateAPITests(APITestCase):
             "title_uz": "New Menu uz",
             "title_ru": "New Menu ru",
             "title_en": "New Menu en",
+            "page_type": "page",
             "status": True,
             "position": 5,
             "parent": None,
@@ -74,12 +75,14 @@ class MenuListCreateAPITests(APITestCase):
         self.assertTrue(created.has_page)
         self.assertIsNotNone(created.page)
         self.assertEqual(created.page.slug, "new-menu")
+        self.assertEqual(created.page.type, "page")
 
     def test_anonymous_user_cannot_create_menu(self):
         payload = {
             "title_uz": "New Menu uz",
             "title_ru": "New Menu ru",
             "title_en": "New Menu en",
+            "page_type": "page",
             "status": True,
             "position": 5,
             "parent": None,
@@ -117,6 +120,7 @@ class MenuDetailAPITests(APITestCase):
             "title_uz": "Updated uz",
             "title_ru": "Updated ru",
             "title_en": "Updated en",
+            "page_type": "page",
             "status": True,
             "position": 3,
             "parent": None,

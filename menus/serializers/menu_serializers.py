@@ -6,14 +6,20 @@ from menus.services.menu_services import MenuService
 class MenuReadSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     page_slug = serializers.SerializerMethodField()
+    page_type = serializers.SerializerMethodField()
 
     class Meta:
         model = Menu
         fields = [
                     "id", 
                     'title_uz', 'title_ru', 'title_en', "parent",
-                    "status", "position", "has_page", "page_slug", "children"
+                    "status", "position", "has_page", "page_slug", "page_type", "children"
                 ]
+        
+    def get_page_type(self, obj) -> str | None:
+        if hasattr(obj, 'page') and obj.page:
+            return obj.page.type
+        return None
     
     
 
