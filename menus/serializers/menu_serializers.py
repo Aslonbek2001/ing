@@ -36,12 +36,13 @@ class MenuReadSerializer(serializers.ModelSerializer):
 class MenuWriteSerializer(serializers.ModelSerializer):
 
     page_slug = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    page_type = serializers.CharField(required=True)
 
     class Meta:
         model = Menu
         fields = [
                     "id", 
-                    'title_uz', 'title_ru', 'title_en',
+                    'title_uz', 'title_ru', 'title_en', 'page_type',
                     "status", "position", "parent", "has_page", "page_slug"
                 ]
     

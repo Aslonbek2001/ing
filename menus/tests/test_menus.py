@@ -75,6 +75,20 @@ class MenuListCreateAPITests(APITestCase):
         self.assertIsNotNone(created.page)
         self.assertEqual(created.page.slug, "new-menu")
 
+    def test_anonymous_user_cannot_create_menu(self):
+        payload = {
+            "title_uz": "New Menu uz",
+            "title_ru": "New Menu ru",
+            "title_en": "New Menu en",
+            "status": True,
+            "position": 5,
+            "parent": None,
+            "has_page": False,
+        }
+
+        response = self.client.post(self.url, payload, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class MenuDetailAPITests(APITestCase):
     def setUp(self):

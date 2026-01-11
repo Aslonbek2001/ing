@@ -13,7 +13,8 @@ class MenuService:
         menu = Menu.objects.create(**validated_data)
 
         if has_page:
-            MenuService._create_or_update_page(menu, page_slug)
+            page_type = validated_data.get('page_type', 'page')
+            MenuService._create_or_update_page(menu, page_slug, page_type)
 
         return Menu.objects.select_related("page").get(id=menu.id)
 
@@ -39,7 +40,7 @@ class MenuService:
     # ======= Private yordamchi metodlar =======
 
     @staticmethod
-    def _create_or_update_page(menu, slug):
+    def _create_or_update_page(menu, slug, page_type):
         """Agar Page mavjud bo‘lsa — yangilaydi, bo‘lmasa yaratadi"""
         if not slug:
             raise ValueError("Page slug bo‘sh bo‘lishi mumkin emas")
@@ -47,13 +48,14 @@ class MenuService:
         if hasattr(menu, 'page'):
             page = menu.page
             page.slug = slug
+            page.type = page_type
             page.save()
         else:
             Page.objects.create(
                 title=menu.title,
                 slug=slug,
                 menu=menu,
-                type='page',
+                type=page_type,
                 status=True
             )
 
