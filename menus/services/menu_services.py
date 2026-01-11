@@ -10,10 +10,12 @@ class MenuService:
     def create_menu(validated_data):
         has_page = validated_data.get('has_page', False)
         page_slug = validated_data.pop('page_slug', None)
+        page_type = validated_data.pop('page_type', None)
         menu = Menu.objects.create(**validated_data)
 
         if has_page:
-            page_type = validated_data.get('page_type', 'page')
+            if not page_type:
+                page_type = 'page'
             MenuService._create_or_update_page(menu, page_slug, page_type)
 
         return Menu.objects.select_related("page").get(id=menu.id)
@@ -23,6 +25,7 @@ class MenuService:
     def update_menu(instance, validated_data):
         has_page = validated_data.get('has_page', instance.has_page)
         page_slug = validated_data.pop('page_slug', None)
+        page_type = validated_data.pop('page_type', None)
 
         # Menuni yangilash
         for attr, value in validated_data.items():
@@ -31,7 +34,9 @@ class MenuService:
 
         # Page logikasi
         if has_page:
-            MenuService._create_or_update_page(instance, page_slug)
+            if not page_type:
+                page_type = 'page'
+            MenuService._create_or_update_page(instance, page_slug, page_type=page_type)
         else:
             MenuService._delete_page_if_exists(instance)
 
