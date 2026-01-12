@@ -29,4 +29,21 @@ class Application(models.Model):
     def __str__(self):
         return f"{self.name} - {self.phone}"
 
+class Collaborations(models.Model):
+    title = models.CharField(max_length=255, db_index=True)
+    image = models.ImageField(upload_to='collaborations/')
+    link = models.URLField(blank=True, null=True)
+    position = models.PositiveIntegerField(default=0, db_index=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['position']
+        
+    def __str__(self):
+        return self.title
+
+
+
+
+
 auto_delete_image_with_renditions(Carousel, "image")

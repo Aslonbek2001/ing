@@ -1,4 +1,4 @@
-from parts.models import Carousel, Application
+from parts.models import Carousel, Application, Collaborations
 from rest_framework import serializers
 
 
@@ -19,3 +19,15 @@ class ApplicationSerializer(serializers.ModelSerializer):
         model = Application
         fields = "__all__"
         read_only_fields = ["id", "submitted_at"]
+
+
+
+class CollaborationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collaborations
+        fields = [
+                    "id", 
+                    'title_uz', 'title_ru', 'title_en',
+                    "image", "link", "position", "status"
+                ]
+        read_only_fields = ["id"]
