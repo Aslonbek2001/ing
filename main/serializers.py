@@ -1,7 +1,7 @@
 from .models import Company
 from rest_framework import serializers
 from menus.serializers.page_serializers import PageListSerializer
-from parts.serializers import CarouselSerializer
+from parts.serializers import CarouselSerializer, CollaborationsSerializer
 from posts.serializers import PostManageListSerializer
 from menus.serializers.menu_serializers import MenuReadSerializer
 from menus.serializers.scientific_direction_serializers import ScientificDirectionListSerializer
@@ -20,6 +20,7 @@ class HomePageSerializer(serializers.Serializer):
     latest_posts = PostManageListSerializer(many=True)
     scientific_directions = ScientificDirectionListSerializer(many=True)
     postgraduate_education = PostgraduateEducationListSerializer(many=True)
+    collaborations = CollaborationsSerializer(many=True)
 
 class DashboardItems(serializers.Serializer):
     name = serializers.CharField()

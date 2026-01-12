@@ -22,6 +22,7 @@ class HomePageView(APIView):
         latest_posts = HomePageService.get_latest_posts()
         scientific_directions = HomePageService.scientific_directions()
         postgraduate_education = HomePageService.postgraduate_education()
+        collaborations = HomePageService.collaborations()
 
         data = {
             "menu": menu,
@@ -30,6 +31,7 @@ class HomePageView(APIView):
             "latest_posts": latest_posts,
             "scientific_directions": scientific_directions,
             "postgraduate_education": postgraduate_education,
+            "collaborations": collaborations,
         }
 
         serializer = HomePageSerializer(data)

@@ -1,6 +1,6 @@
 from main.models import Company
 from posts.models import Post, PostImages
-from parts.models import Carousel
+from parts.models import Carousel, Collaborations
 from menus.models import Page, PageImages
 from menus.models import Menu
 from main.serializers import DashboardSerializer
@@ -33,6 +33,10 @@ class HomePageService:
     @staticmethod
     def postgraduate_education():
         return Page.objects.filter(type="postgraduate_education").order_by("position")
+    
+    @staticmethod
+    def collaborations():
+        return Collaborations.objects.filter(status=True).order_by('position')
     
 
 
