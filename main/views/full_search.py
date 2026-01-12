@@ -5,13 +5,13 @@ from rest_framework.views import APIView
 from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 
 from menus.models import Employee, Menu, Page, PageFiles
-from parts.models import Carousel
+from parts.models import Carousel, Collaborations
 from posts.models import Post
 from menus.serializers.employee_serializers import EmployeeListSerializer
 from menus.serializers.menu_serializers import MenuReadSerializer
 from menus.serializers.page_serializers import PageFileSerializer, PageListSerializer
 from posts.serializers import PostManageListSerializer
-from parts.serializers import CarouselSerializer
+from parts.serializers import CarouselSerializer, CollaborationsSerializer
 
 
 @extend_schema(
@@ -51,6 +51,7 @@ class FullSearchAPIView(APIView):
                         "employees": [],
                         "page_files": [],
                         "carousels": [],
+                        "collaborations": [],
                     },
                 }
             )
@@ -131,6 +132,14 @@ class FullSearchAPIView(APIView):
             )
         )[:limit]
 
+        collaborations = with_status(
+            Collaborations.objects.filter(
+                Q(title_uz__icontains=query)
+                | Q(title_ru__icontains=query)
+                | Q(title_en__icontains=query)
+            )
+        )[:limit]
+
         return Response(
             {
                 "query": query,
@@ -142,6 +151,7 @@ class FullSearchAPIView(APIView):
                     "employees": EmployeeListSerializer(employees, many=True).data,
                     "page_files": PageFileSerializer(page_files, many=True).data,
                     "carousels": CarouselSerializer(carousels, many=True).data,
+                    "collaborations": CollaborationsSerializer(collaborations, many=True).data,
                 },
             }
         )
