@@ -44,6 +44,7 @@ class PostManageSerializer(serializers.ModelSerializer):
         many=True,
         required=False
     )
+    last_posts = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -51,9 +52,18 @@ class PostManageSerializer(serializers.ModelSerializer):
             "id", "title_uz", "title_ru", "title_en",
             "description_uz", "description_ru", "description_en",
             "status", "published_date", "type", "pages",
-            "images", "upload_images", "exists_image_ids"
+            "images", "upload_images", "exists_image_ids", "last_posts"
         ]
         read_only_fields = ["id", "images"]
+
+    def get_last_posts(self, obj):
+        qs = (
+            Post.objects.filter(type=obj.type, status=True)
+            .exclude(id=obj.id)
+            .order_by("-published_date")[:10]
+        )
+        return PostManageListSerializer(qs, many=True).data
+
 
     def create(self, validated_data):
         upload_images = validated_data.pop("upload_images", [])
