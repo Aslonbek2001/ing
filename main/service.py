@@ -23,7 +23,9 @@ class HomePageService:
         return Company.objects.first()
     
     @staticmethod
-    def get_latest_posts():
+    def get_latest_posts(type=None):
+        if type:
+            return Post.objects.filter(status=True, type=type).order_by('-published_date')[:6]
         return Post.objects.filter(status=True).order_by('-published_date')[:6]
 
     @staticmethod

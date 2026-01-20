@@ -18,6 +18,8 @@ class HomePageSerializer(serializers.Serializer):
     company = CompanySerializer(allow_null=True)
     carousels = CarouselSerializer(many=True)
     latest_posts = PostManageListSerializer(many=True)
+    latest_news = PostManageListSerializer(many=True)
+    latest_announcements = PostManageListSerializer(many=True)
     scientific_directions = ScientificDirectionListSerializer(many=True)
     postgraduate_education = PostgraduateEducationListSerializer(many=True)
     collaborations = CollaborationsSerializer(many=True)
