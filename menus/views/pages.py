@@ -52,6 +52,11 @@ class PageListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PageSerializer
     pagination_class = CustomPageNumberPagination
 
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Page.objects.filter(type="page", status=True)
+        return Page.objects.filter(type="page")
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return PageListSerializer
@@ -70,8 +75,8 @@ class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
-            return Page.objects.filter(status=True)
-        return Page.objects.all()
+            return Page.objects.filter(type="page", status=True)
+        return Page.objects.filter(type="page")
 
 
 

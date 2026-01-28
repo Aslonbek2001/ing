@@ -30,6 +30,11 @@ class LabListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = LabSer
     pagination_class = CustomPageNumberPagination
 
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Page.objects.filter(type="lab", status=True).order_by("position")
+        return Page.objects.filter(type="lab").order_by("position")
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return LabSer

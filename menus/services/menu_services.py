@@ -58,6 +58,7 @@ class MenuService:
         else:
             Page.objects.create(
                 title=menu.title,
+                is_menu_page=True,
                 slug=slug,
                 menu=menu,
                 type=page_type,

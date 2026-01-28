@@ -50,8 +50,9 @@ class Page(models.Model):
         null=True, blank=True
     )
     slug = models.SlugField(unique=True, db_index=True, max_length=100, null=True, blank=True)
-    status = models.BooleanField(default=True, db_index=True,)
+    status = models.BooleanField(default=True, db_index=True)
     description = models.TextField(blank=True, null=True)
+    is_menu_page = models.BooleanField(default=False, db_index=True)
 
     def __str__(self):
         return self.title
