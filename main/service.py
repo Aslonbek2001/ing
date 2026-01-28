@@ -30,11 +30,11 @@ class HomePageService:
 
     @staticmethod
     def scientific_directions():
-        return Page.objects.filter(type="scientific_direction").order_by("position")
+        return Page.objects.filter(type="scientific_direction", is_menu_page=False, status=True).order_by("position")
 
     @staticmethod
     def postgraduate_education():
-        return Page.objects.filter(type="postgraduate_education").order_by("position")
+        return Page.objects.filter(type="postgraduate_education", is_menu_page=False, status=True).order_by("position")
     
     @staticmethod
     def collaborations():

@@ -60,7 +60,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     def get_scientific_directions(self, obj) -> list:
         try:
             if obj.type == 'scientific_direction':
-                sd_qs = Page.objects.filter(type='scientific_direction', status=True).order_by('position')
+                sd_qs = Page.objects.filter(type='scientific_direction', status=True, is_menu_page=False).order_by('position')
                 from .scientific_direction_serializers import ScientificDirectionListSerializer
                 return ScientificDirectionListSerializer(sd_qs, many=True).data
                 
@@ -71,7 +71,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     def get_postgraduate_educations(self, obj) -> list:
         try:
             if obj.type == 'postgraduate_education':
-                pe_qs = Page.objects.filter(type='postgraduate_education', status=True).order_by('position')
+                pe_qs = Page.objects.filter(type='postgraduate_education', status=True, is_menu_page=False).order_by('position')
                 from .postgraduate_education_serializers import PostgraduateEducationListSerializer
                 return PostgraduateEducationListSerializer(pe_qs, many=True).data
                 
@@ -83,7 +83,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     def get_labs(self, obj) -> list:
         try:
             if obj.type == 'lab':
-                labs_qs = Page.objects.filter(type='lab', status=True).order_by('position')
+                labs_qs = Page.objects.filter(type='lab', status=True, is_menu_page=False).order_by('position')
                 from .labser import LabSer
                 return LabSer(labs_qs, many=True).data
                 
@@ -94,7 +94,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     def get_departments(self, obj) -> list:
         try:
             if obj.type == 'department':
-                depts_qs = Page.objects.filter(type='department', status=True).order_by('position')
+                depts_qs = Page.objects.filter(type='department', status=True, is_menu_page=False).order_by('position')
                 # Local import to avoid circular dependency with labser.
                 from .departments_serializers import DepartmentListSerializer
                 return DepartmentListSerializer(depts_qs, many=True).data
