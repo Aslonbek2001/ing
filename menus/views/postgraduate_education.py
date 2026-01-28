@@ -34,6 +34,11 @@ class PostgraduateEducationListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PostgraduateEducationSerializer
     pagination_class = CustomPageNumberPagination
 
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Page.objects.filter(type="postgraduate_education", status=True, is_menu_page=False).order_by("position")
+        return Page.objects.filter(type="postgraduate_education", is_menu_page=False).order_by("position")
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return PostgraduateEducationListSerializer

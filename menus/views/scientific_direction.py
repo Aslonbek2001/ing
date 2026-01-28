@@ -34,6 +34,11 @@ class ScientificDirectionListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ScientificDirectionSerializer
     pagination_class = CustomPageNumberPagination
 
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Page.objects.filter(type="scientific_direction", status=True, is_menu_page=False).order_by("position")
+        return Page.objects.filter(type="scientific_direction", is_menu_page=False).order_by("position")
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return ScientificDirectionListSerializer
