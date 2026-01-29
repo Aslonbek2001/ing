@@ -52,6 +52,9 @@ class MenuService:
 
         if hasattr(menu, 'page'):
             page = menu.page
+            page.title = menu.title
+            page.title_ru = menu.title_ru
+            page.title_en = menu.title_en
             page.slug = slug
             page.type = page_type
             page.save()
