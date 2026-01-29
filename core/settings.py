@@ -22,6 +22,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",                    
     "localhost",
     "api.ing.uz",
+    "ing.uz",
     "172.16.29.126",
 ]
 
