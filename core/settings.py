@@ -28,6 +28,12 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://admin.ing.uz",
+    "https://api.ing.uz",
+    "https://ing.uz",
+]
+
 # Application definition
 INSTALLED_APPS = [
     'jazzmin',
