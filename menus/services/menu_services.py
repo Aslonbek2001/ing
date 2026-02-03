@@ -64,7 +64,7 @@ class MenuService:
                 title=menu.title,
                 title_ru=menu.title_ru,
                 title_en=menu.title_en,
-                is_menu_page=True if page_type != 'postgraduate_education' else False,
+                is_menu_page=True,
                 slug=slug,
                 menu=menu,
                 type=page_type,
