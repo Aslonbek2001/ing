@@ -56,7 +56,7 @@ class PostManageSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "images"]
 
-    def get_last_posts(self, obj):
+    def get_last_posts(self, obj) -> list:
         qs = (
             Post.objects.filter(type=obj.type, status=True)
             .exclude(id=obj.id)

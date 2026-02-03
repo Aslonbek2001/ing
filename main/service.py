@@ -61,7 +61,7 @@ class DashboardService:
     
     @staticmethod
     def get_labs_count():
-        total_qs = Page.objects.filter(type="lab")
+        total_qs = Page.objects.filter(type="lab", is_menu_page=False)
         total = total_qs.count()
         active = total_qs.filter(status=True).count()
         inactive = total - active
@@ -76,7 +76,7 @@ class DashboardService:
     
     @staticmethod
     def get_departments_count():
-        total_qs = Page.objects.filter(type="department")
+        total_qs = Page.objects.filter(type="department", is_menu_page=False)
         total = total_qs.count()
         active = total_qs.filter(status=True).count()
         inactive = total - active
@@ -99,7 +99,7 @@ class DashboardService:
 
     @staticmethod
     def get_scientific_directions_count():
-        total_qs = Page.objects.filter(type="scientific_direction")
+        total_qs = Page.objects.filter(type="scientific_direction", is_menu_page=False)
         total = total_qs.count()
         active = total_qs.filter(status=True).count()
         inactive = total - active
