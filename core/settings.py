@@ -70,8 +70,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'University Project API',
-    'DESCRIPTION': 'University project description',
+    'TITLE': 'NGGI Project API',
+    'DESCRIPTION': 'NGGI project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     "ENUM_NAME_OVERRIDES": {
