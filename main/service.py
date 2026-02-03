@@ -46,7 +46,7 @@ class DashboardService:
     
     @staticmethod
     def get_pages_count():
-        total_qs = Page.objects.filter(type="page")
+        total_qs = Page.objects.filter(type="page", is_menu_page=False)
         total = total_qs.count()
         active = total_qs.filter(status=True).count()
         inactive = total - active
@@ -114,7 +114,7 @@ class DashboardService:
 
     @staticmethod
     def get_postgraduate_education_count():
-        total_qs = Page.objects.filter(type="postgraduate_education")
+        total_qs = Page.objects.filter(type="postgraduate_education", is_menu_page=False)
         total = total_qs.count()
         active = total_qs.filter(status=True).count()
         inactive = total - active
