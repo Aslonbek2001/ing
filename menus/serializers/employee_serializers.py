@@ -2,28 +2,19 @@ from rest_framework import serializers
 from menus.models import Employee, Page
 
 class EmployeeListSerializer(serializers.ModelSerializer):
-    # Rasm maydonini qo'lda shakllantirish uchun o'zgartiramiz
-    image = serializers.SerializerMethodField()
-
     class Meta:
         model = Employee
         fields = [
-            "id", 
-            "full_name_uz", "full_name_ru", "full_name_en",
-            "position_uz", "position_ru", "position_en",
-            "order", "pages",
-            "phone", "email", "image"
-        ]
+                    "id", 
+                    "full_name_uz", "full_name_ru", "full_name_en",
+                    "position_uz", "position_ru", "position_en",
+                    "order", "pages",
+                    "phone", "email", "image"
+                ]
 
-    # Linkni majburiy ravishda api.ing.uz bilan yasaydigan funksiya
-    def get_image(self, obj):
-        if obj.image:
-            # obj.image.url odatda '/media/...' ni qaytaradi
-            return f"https://api.ing.uz{obj.image.url}"
-        return None
+
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
     pages = serializers.PrimaryKeyRelatedField(
         queryset=Page.objects.all(),
         many=True,
@@ -33,18 +24,13 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = [
-            "id", 
-            "full_name_uz", "full_name_ru", "full_name_en",
-            "position_uz", "position_ru", "position_en",
-            "description_uz", "description_ru", "description_en",
-            "order", "pages",
-            "phone", "email", "image"
-        ]
-
-    def get_image(self, obj):
-        if obj.image:
-            return f"https://api.ing.uz{obj.image.url}"
-        return None
+                    "id", 
+                    "full_name_uz", "full_name_ru", "full_name_en",
+                    "position_uz", "position_ru", "position_en",
+                    "description_uz", "description_ru", "description_en",
+                    "order", "pages",
+                    "phone", "email", "image"
+                ]
 
     def create(self, validated_data):
         pages = validated_data.pop("pages", [])
