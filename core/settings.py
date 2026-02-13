@@ -124,7 +124,7 @@ MIDDLEWARE = [
 # USE_X_FORWARDED_HOST = True
 # USE_X_FORWARDED_PORT = True
 
-# ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'core.urls'
 
 
 
