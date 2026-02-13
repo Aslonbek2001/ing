@@ -117,14 +117,14 @@ MIDDLEWARE = [
 ]
 
 
-# Checkpoint HTTPS so'rovni HTTP qilib uzatganda, Django uni HTTPS deb tanishi uchun
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# # Checkpoint HTTPS so'rovni HTTP qilib uzatganda, Django uni HTTPS deb tanishi uchun
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Agar rasm linklari hali ham IP bilan chiqsa, buni ham qo'shing
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True
+# # Agar rasm linklari hali ham IP bilan chiqsa, buni ham qo'shing
+# USE_X_FORWARDED_HOST = True
+# USE_X_FORWARDED_PORT = True
 
-ROOT_URLCONF = 'core.urls'
+# ROOT_URLCONF = 'core.urls'
 
 
 
