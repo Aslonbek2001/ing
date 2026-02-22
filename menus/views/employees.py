@@ -5,14 +5,17 @@ from menus.models import Employee
 from menus.serializers.employee_serializers import (
     EmployeeListSerializer, EmployeeDetailSerializer
 )
+from rest_framework.parsers import MultiPartParser, FormParser
 from core.pagination import CustomPageNumberPagination
 from drf_spectacular.utils import extend_schema
 
 @extend_schema(tags=["Employees"])
 class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
+
     pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    parser_classes = (MultiPartParser, FormParser)
 
     # SEARCH + ORDERING
     search_fields = ['full_name', 'position', 'phone', 'email']
@@ -38,9 +41,9 @@ class EmployeeListCreateAPIView(generics.ListCreateAPIView):
                 if ids:
                     queryset = queryset.filter(pages__id__in=ids)
             except:
-                pass  # xato bo‘lsa ignore qilamiz
+                pass  
 
-        return queryset.distinct()  # <— MUHIM! duplicate bo‘lmasin
+        return queryset.distinct()
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
