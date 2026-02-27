@@ -20,9 +20,9 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
         many=True,
         required=False,
     )
+    # image = serializers.ImageField(use_url=True)
 
     class Meta:
-        image = serializers.ImageField(use_url=True)
         model = Employee
         fields = [
                     "id", 

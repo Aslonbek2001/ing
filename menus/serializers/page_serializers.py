@@ -79,7 +79,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
         except:
             return []
 
-    def get_files(self, obj):
+    def get_files(self, obj) -> list:
         files = obj.files.all().order_by('position')
         return PageFileSerializer(files, many=True).data
 

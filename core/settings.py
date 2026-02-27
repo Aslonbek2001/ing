@@ -25,6 +25,7 @@ ALLOWED_HOSTS = [
     "api.ing.uz",
     "ing.uz",
     "172.16.29.126",
+    
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -94,15 +95,15 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
-VERSATILEIMAGEFIELD_SETTINGS = {
-    "create_images_on_demand": False,  # Kerakli hajmli rasm oldindan yaratiladi
-}
+# VERSATILEIMAGEFIELD_SETTINGS = {
+#     "create_images_on_demand": False,  # Kerakli hajmli rasm oldindan yaratiladi
+# }
 
-VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
-    'post_image': [
-        ('medium', 'thumbnail__400x400')   # Masshtab, cho‘zilmasdan, qirqilmasdan
-    ]
-}
+# VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
+#     'post_image': [
+#         ('medium', 'thumbnail__400x400')   # Masshtab, cho‘zilmasdan, qirqilmasdan
+#     ]
+# }
 
 
 MIDDLEWARE = [

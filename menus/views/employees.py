@@ -26,13 +26,12 @@ class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     filterset_fields = {
         'status': ['exact'],
         'order': ['exact', 'gte', 'lte'],
-        'pages__id': ['exact', 'in'],   # <— BU ENG TO‘G‘RISI!
+        'pages__id': ['exact', 'in'],
     }
 
     def get_queryset(self):
         queryset = Employee.objects.all()
 
-        # Agar frontchi ?page_id=5 deb yuborsa — ham ishlatamiz
         page_id = self.request.query_params.get('page_id') or self.request.query_params.get('pages__id')
         if page_id:
             try:
@@ -44,6 +43,9 @@ class EmployeeListCreateAPIView(generics.ListCreateAPIView):
                 pass  
 
         return queryset.distinct()
+    
+    def get_serializer_context(self):
+        return {}
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -57,3 +59,6 @@ class EmployeeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeeDetailSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
+
+    def get_serializer_context(self):
+        return {}
