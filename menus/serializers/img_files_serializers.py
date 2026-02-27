@@ -18,7 +18,6 @@ class PageFileSerializer(serializers.ModelSerializer):
                     'title_uz', 'title_ru', 'title_en',
                     "file", "position", "status"
                 ]
-        ordering = ['position']
         
     def get_page_slug(self, obj) -> str | None:
         try:

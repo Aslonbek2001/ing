@@ -36,7 +36,7 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
     menu = MenuReadSerializer(read_only=True)
     images = PageImageSerializer(many=True, read_only=True)
     employees = EmployeeListSerializer(many=True, read_only=True)
-    files = PageFileSerializer(many=True, read_only=True)
+    files = serializers.SerializerMethodField()
     posts = serializers.SerializerMethodField()
     labs = serializers.SerializerMethodField()
     departments = serializers.SerializerMethodField()
@@ -79,7 +79,10 @@ class PageDetailSerializerForUsers(serializers.ModelSerializer):
         except:
             return []
 
-    
+    def get_files(self, obj):
+        files = obj.files.all().order_by('position')
+        return PageFileSerializer(files, many=True).data
+
     def get_labs(self, obj) -> list:
         try:
             if obj.type == 'lab':
