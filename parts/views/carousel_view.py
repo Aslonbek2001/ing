@@ -36,6 +36,9 @@ class CarouselViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         return CarouselSerializer
+    
+    def get_serializer_context(self):
+        return {}
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()) 
