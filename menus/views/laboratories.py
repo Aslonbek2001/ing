@@ -67,6 +67,9 @@ class LabDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(status=True)
         return Page.objects.all()
+    
+    def get_serializer_context(self):
+        return {}
 
     def get_object(self):
         lookup_value = self.kwargs.get(self.lookup_field)

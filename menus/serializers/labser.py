@@ -2,7 +2,7 @@ from rest_framework import serializers
 from menus.models import Page, PageImages
 from menus.serializers.img_files_serializers import PageImageSerializer
 from menus.serializers.page_serializers import PageListSerializer, PageSerializer
-
+from menus.serializers.employee_serializers import EmployeeListSerializer
 
 class LabSer(PageListSerializer):
     image = serializers.SerializerMethodField()
@@ -22,6 +22,7 @@ class LabSer(PageListSerializer):
 
 class LabDetailSer(PageSerializer):
     images = PageImageSerializer(many=True, read_only=True)
+    employees = serializers.SerializerMethodField()
     upload_images = serializers.ListField(
         child=serializers.ImageField(),
         write_only=True,
@@ -36,7 +37,7 @@ class LabDetailSer(PageSerializer):
     class Meta(PageSerializer.Meta):
         model = Page
         fields = list(PageSerializer.Meta.fields) + [
-            "position", "images", "upload_images", "exists_image_ids"
+            "position", "images", "upload_images", "exists_image_ids", "employees"
         ]
 
     def create(self, validated_data):
@@ -63,3 +64,7 @@ class LabDetailSer(PageSerializer):
     def _create_images(self, page, images):
         for image in images:
             PageImages.objects.create(page=page, image=image)
+
+    def get_employees(self, obj) -> list:
+        employees = obj.employees.all().order_by("order")
+        return EmployeeListSerializer(employees, many=True).data

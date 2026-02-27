@@ -44,6 +44,9 @@ class PageFileListCreateAPIView(generics.ListCreateAPIView):
         if not user.is_staff:
             return self.queryset.filter(status=True)
         return self.queryset
+    
+    def get_serializer_context(self):
+        return {}
 
     
 @extend_schema(
@@ -60,6 +63,9 @@ class PageFileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PageFileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "id"
+
+    def get_serializer_context(self):
+        return {}
 
 
 @extend_schema(
@@ -80,6 +86,9 @@ class PageImageListCreateAPIView(generics.ListCreateAPIView):
     ordering_fields = ["id"]
     ordering = ["-id"]
 
+    def get_serializer_context(self):
+        return {}
+
 
 @extend_schema(
     tags=["Admin - Page Images"],
@@ -95,3 +104,6 @@ class PageImageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PageImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "id"
+
+    def get_serializer_context(self):
+        return {}

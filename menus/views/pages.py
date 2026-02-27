@@ -61,6 +61,9 @@ class PageListCreateAPIView(generics.ListCreateAPIView):
         if self.request.method == "GET":
             return PageListSerializer
         return PageSerializer
+    
+    def get_serializer_context(self):
+        return {}
 
 
 @extend_schema(
