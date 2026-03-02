@@ -34,6 +34,9 @@ class PostManageViewSet(viewsets.ModelViewSet):
             qs = qs.filter(status=True)
 
         return qs
+    
+    def get_serializer_context(self):
+        return {}
 
     def get_serializer_class(self):
         if self.action == "list":
