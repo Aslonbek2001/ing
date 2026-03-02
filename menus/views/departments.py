@@ -38,6 +38,9 @@ class DepartmentListCreateAPIView(generics.ListCreateAPIView):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(type="department", status=True, is_menu_page=False).order_by("position")
         return Page.objects.filter(type="department", is_menu_page=False).order_by("position")
+    
+    def get_serializer_context(self):
+        return {}
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -71,6 +74,9 @@ class DepartmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(status=True)
         return Page.objects.all()
+    
+    def get_serializer_context(self):
+        return {}
 
     def get_object(self):
         lookup_value = self.kwargs.get(self.lookup_field)

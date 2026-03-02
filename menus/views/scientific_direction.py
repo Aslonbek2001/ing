@@ -39,6 +39,9 @@ class ScientificDirectionListCreateAPIView(generics.ListCreateAPIView):
             return Page.objects.filter(type="scientific_direction", status=True, is_menu_page=False).order_by("position")
         return Page.objects.filter(type="scientific_direction", is_menu_page=False).order_by("position")
 
+    def get_serializer_context(self):
+        return {}
+    
     def get_serializer_class(self):
         if self.request.method == "GET":
             return ScientificDirectionListSerializer
@@ -66,6 +69,9 @@ class ScientificDirectionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ScientificDirectionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "lookup"
+
+    def get_serializer_context(self):
+        return {}
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:

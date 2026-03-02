@@ -67,6 +67,9 @@ class PostImageViewSet(viewsets.ModelViewSet):
         else:
             post = get_object_or_404(Post, id=post_id, status=True)
         return post.images.all()
+    
+    def get_serializer_context(self):
+        return {}
 
 
     def perform_create(self, serializer):

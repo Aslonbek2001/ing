@@ -76,6 +76,9 @@ class PageDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = "id"
 
+    def get_serializer_context(self):
+        return {}
+
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Page.objects.filter(type="page", status=True)
